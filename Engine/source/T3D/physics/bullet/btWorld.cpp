@@ -111,11 +111,16 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
       mDispatcher = new	btCollisionDispatcher( mCollisionConfiguration );
    }
   
+#ifndef BULLET_INFINITE_WORLD
    btVector3 worldMin( -2000, -2000, -1000 );
    btVector3 worldMax( 2000, 2000, 1000 );
    btAxisSweep3 *sweepBP = new btAxisSweep3( worldMin, worldMax );
    mBroadphase = sweepBP;
    sweepBP->getOverlappingPairCache()->setInternalGhostPairCallback( new btGhostPairCallback() );
+#else
+	mBroadphase = new btDbvtBroadphase();
+	mBroadphase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+#endif
 
    if ( smMaxThreads > 1 )
 	{
@@ -133,6 +138,7 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
 	}
 
    mDynamicsWorld = new btDiscreteDynamicsWorld( mDispatcher, mBroadphase, mSolver, mCollisionConfiguration );
+   
    if ( !mDynamicsWorld )
    {
       Con::errorf( "BtWorld - %s failed to create dynamics world!", isServer ? "Server" : "Client" );
@@ -145,8 +151,9 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
    
    if ( smMaxThreads > 1 )
    {
+      //mDynamicsWorld->getSimulationIslandManager()->setSplitIslands(false);
+		mDynamicsWorld->getSolverInfo().m_solverMode = SOLVER_SIMD+SOLVER_USE_WARMSTARTING+SOLVER_RANDMIZE_ORDER;
 		mDynamicsWorld->getDispatchInfo().m_enableSPU = true;
-      mDynamicsWorld->getSolverInfo().m_solverMode = SOLVER_SIMD+SOLVER_USE_WARMSTARTING;//+SOLVER_RANDMIZE_ORDER;
    }
    else
       mDynamicsWorld->getSolverInfo().m_solverMode &= ~SOLVER_RANDMIZE_ORDER;

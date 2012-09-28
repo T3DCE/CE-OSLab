@@ -40,7 +40,6 @@ class ProcessList;
 class btThreadSupportInterface;
 class PhysicsBody;
 
-
 class BtWorld : public PhysicsWorld
 {
 protected:
@@ -53,8 +52,10 @@ protected:
    btBroadphaseInterface *mBroadphase;
    btCollisionDispatcher *mDispatcher;
    btConstraintSolver *mSolver;
+   btParallelConstraintSolver *mParallelSolver;
    btDefaultCollisionConfiguration *mCollisionConfiguration;
   	btThreadSupportInterface *mThreadSupportCollision;
+   btThreadSupportInterface *mThreadSupportSolver;
 
    bool mErrorReport;
 

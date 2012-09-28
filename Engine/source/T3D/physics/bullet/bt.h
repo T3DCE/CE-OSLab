@@ -28,6 +28,8 @@
 #define WIN32
 #endif
 
+#define __BT_SKIP_UINT64_H
+
 // NOTE: All the Bullet includes we use should be here and
 // nowhere else.... beware!
 

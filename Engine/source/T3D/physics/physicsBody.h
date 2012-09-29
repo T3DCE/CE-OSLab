@@ -113,6 +113,11 @@ public:
 
    ///
    virtual void applyImpulse( const Point3F &origin, const Point3F &force ) = 0;
+
+   ///
+	virtual void setCCD(F32 &ccdMotionThreshold, F32 &ccdSweptSphereRadius) = 0;
+	virtual F32 getccdMotionThreshold() const = 0;
+	virtual F32 getccdSweptSphereRadius() const = 0;
 };
 
 

@@ -259,7 +259,8 @@ bool TerrainBlock::_setBaseTexSize( void *obj, const char *index, const char *da
    // base texture with your installer.
    //
 
-   S32 texSize = mClamp( dAtoi( data ), 0, 2048 );
+   // Allow Terrain Base Texture sizes up to 4096
+   S32 texSize = mClamp( dAtoi( data ), 0, 4096 );
    if ( terrain->mBaseTexSize != texSize )
    {
       terrain->mBaseTexSize = texSize;

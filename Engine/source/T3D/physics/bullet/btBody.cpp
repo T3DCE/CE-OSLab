@@ -27,9 +27,11 @@
 #include "T3D/physics/bullet/btCasts.h"
 #include "T3D/physics/bullet/btWorld.h"
 #include "T3D/physics/bullet/btCollision.h"
+#ifdef BULLET_MOTIONSTATES
+#include "T3D/physics/bullet/btMotionState.h"
+#endif
 #include "math/mBox.h"
 #include "console/console.h"
-
 
 BtBody::BtBody() :
    mActor( NULL ),
@@ -132,8 +134,15 @@ bool BtBody::init(   PhysicsCollision *shape,
    }
 
    mMass = mass;
+
+#ifndef BULLET_MOTIONSTATES
    mActor = new btRigidBody( mass, NULL, btColShape, localInertia );
-   
+#else
+   // Add the MotionStats to sync the world
+	mMotionState = new BtMotionState(btCast<btTransform>(localXfm), this);
+   mActor = new btRigidBody(mass, mMotionState, btColShape, localInertia);
+#endif
+
    int btFlags = mActor->getCollisionFlags();
 
    if ( bodyFlags & BF_TRIGGER )
@@ -145,6 +154,12 @@ bool BtBody::init(   PhysicsCollision *shape,
    }
 
    mActor->setCollisionFlags( btFlags );
+
+   if (mIsDynamic)
+	{
+		//mActor->setCcdMotionThreshold(ccdMotionThreshold);
+		//mActor->setCcdSweptSphereRadius(ccdSweptSphereRadius);
+	}
 
    mWorld->getDynamicsWorld()->addRigidBody( mActor );
    mIsEnabled = true;
@@ -371,4 +386,32 @@ void BtBody::setSimulationEnabled( bool enabled )
       mWorld->getDynamicsWorld()->addRigidBody( mActor );
 
    mIsEnabled = enabled;
+}
+
+// ----------------------------------------------------------------------------
+// CCD
+// ----------------------------------------------------------------------------
+
+void BtBody::setCCD(F32 &ccdMotionThreshold, F32 &ccdSweptSphereRadius)
+{
+	AssertFatal(mActor, "BtBody::setCCD - The actor is null!");
+	AssertFatal(isDynamic(), "BtBody::setCCD - This call is only for dynamics!");
+	mActor->setCcdMotionThreshold(ccdMotionThreshold);
+	mActor->setCcdSweptSphereRadius(ccdSweptSphereRadius);
+}
+
+F32 BtBody::getccdMotionThreshold() const
+{
+	AssertFatal(mActor, "BtBody::getccdMotionThreshold - The actor is null!");
+	AssertFatal(isDynamic(), "BtBody::getccdMotionThreshold - This call is only for dynamics!");
+
+	return mActor->getCcdMotionThreshold();
+}
+
+F32 BtBody::getccdSweptSphereRadius() const
+{
+	AssertFatal(mActor, "BtBody::getccdSweptSphereRadius - The actor is null!");
+	AssertFatal(isDynamic(), "BtBody::getccdSweptSphereRadius - This call is only for dynamics!");
+
+	return mActor->getCcdSweptSphereRadius();
 }

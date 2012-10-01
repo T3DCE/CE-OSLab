@@ -28,6 +28,8 @@
 #define WIN32
 #endif
 
+#define __BT_SKIP_UINT64_H
+
 // NOTE: All the Bullet includes we use should be here and
 // nowhere else.... beware!
 
@@ -39,6 +41,6 @@
 #include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
 #include <BulletMultiThreaded/Win32ThreadSupport.h>
 #include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
-
+#include "BulletMultiThreaded/btParallelConstraintSolver.h"
 
 #endif // _BULLET_H_

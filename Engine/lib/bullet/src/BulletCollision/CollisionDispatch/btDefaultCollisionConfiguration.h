@@ -112,6 +112,11 @@ public:
 		return m_stackAlloc;
 	}
 
+	virtual	btVoronoiSimplexSolver*	getSimplexSolver()
+	{
+		return m_simplexSolver;
+	}
+
 
 	virtual btCollisionAlgorithmCreateFunc* getCollisionAlgorithmCreateFunc(int proxyType0,int proxyType1);
 
@@ -123,6 +128,8 @@ public:
 	///See Bullet/Demos/CollisionDemo for an example how this feature gathers multiple points.
 	///@todo we could add a per-object setting of those parameters, for level-of-detail collision detection.
 	void	setConvexConvexMultipointIterations(int numPerturbationIterations=3, int minimumPointsPerturbationThreshold = 3);
+
+	void	setPlaneConvexMultipointIterations(int numPerturbationIterations=3, int minimumPointsPerturbationThreshold = 3);
 
 };
 

@@ -1,15 +1,14 @@
-Torque3D
-========
+Torque3D CE
+===========
 
-MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com)
+This is a port of the [Torque 3D Community Edition](https://lab.collateral-studios.eu/trac/wiki) project to the MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com)
 
 More Information
 ----------------
 
-* Documentation is in the [Torque3D-Documentation](https://github.com/GarageGames/Torque3D-Documentation) GitHub repo.
-* T3D [Beginner's Forum](http://www.garagegames.com/community/forums/73)
-* T3D [Professional Forum](http://www.garagegames.com/community/forums/63)
-* GarageGames [Professional Services](http://services.garagegames.com/)
+* [Torque 3D Community Edition Is Alive](http://www.garagegames.com/community/blogs/view/21727)
+* [Torque 3D Community Edition Discussion Thread](http://www.garagegames.com/community/forums/viewthread/130724)
+* [Torque 3D's Achilles heel](http://www.garagegames.com/community/forums/viewthread/130118)
 
 License
 -------

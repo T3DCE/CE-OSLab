@@ -141,3 +141,72 @@ function demoPlaybackComplete()
 
    Canvas.pushDialog(RecordingsDlg);
 }
+
+//-----------------------------------------------------------------------------
+// Theora Video Capture (Live Encoding)
+//-----------------------------------------------------------------------------
+
+// settings
+$Recordings::VideoCap::Codec		= "THEORA";		// video codec to encode with
+$Recordings::VideoCap::Framerate	= 25;			// video capture frame rate
+$Recordings::VideoCap::MaxFileNum	= 1000;			// maximum file number to try
+
+// please leave alone
+$Recordings::VideoCap::isCapping	= false;
+$Recordings::VideoCap::CapFile		= "";
+$Recordings::VideoCap::CapFileExt	= ".ogv";
+
+// arguments:
+//		action -- boolean
+//				true	Start video capture recording.
+//				false	Stop video capture.
+//				NOTE:	True while already capturing then it's same as doing:
+//							videoCapControl(false); videoCapControl(true);
+//
+function videoCapControl(%action)
+{
+	/// stop recording video
+	if($Recordings::VideoCap::isCapping)
+	{
+		$Recordings::VideoCap::isCapping = false;
+		stopVideoCapture();
+		ChatHud.AddLine( "\c4Video Capture [\c2" @ $Recordings::VideoCap::CapFile @ "\cr] finished.");
+	}
+
+	// abort on stop action since its completed by now
+	if(!%action)
+		return;
+
+	/// start recording video
+
+	// locate a non-existent filename to use
+	for(%i = 0; %i < $Recordings::VideoCap::MaxFileNum; %i++)
+	{
+		%num = %i;
+		if(%num < 10)
+			%num = "0" @ %num;
+		if(%num < 100)
+			%num = "0" @ %num;
+
+		%file = $currentMod @ "/recordings/videoCap" @ %num @ "";
+		if(!isfile(%file @ $Recordings::VideoCap::CapFileExt))
+			break;
+	}
+
+	// failed to locate an available filename
+	if(%i > $Recordings::VideoCap::MaxFileNum)
+	{
+		ChatHud.AddLine( "\c3 *** Video Capture Failed: No unused filenames!");
+		return;
+	}
+
+	// remember video capture file
+	$Recordings::VideoCap::CapFile		= %file @ $Recordings::VideoCap::CapFileExt;
+	$Recordings::VideoCap::isCapping	= true;
+
+	// now begin recording
+	startVideoCapture(Canvas, %file, $Recordings::VideoCap::Codec, $Recordings::VideoCap::Framerate);
+	ChatHud.AddLine( "\c4Started Video Capture [\c2" @ $Recordings::VideoCap::CapFile @ "\cr].");
+
+	// done
+}

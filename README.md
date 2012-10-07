@@ -1,7 +1,7 @@
 Torque3D CE
 ===========
 
-This is a port of the [Torque 3D Community Edition](https://lab.collateral-studios.eu/trac/wiki) project to the MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com)
+This is a work-in-progress port of the [Torque 3D Community Edition](https://lab.collateral-studios.eu/trac/wiki) project to the MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com)
 
 More Information
 ----------------

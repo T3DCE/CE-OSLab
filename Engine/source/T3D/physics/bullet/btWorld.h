@@ -53,8 +53,10 @@ protected:
    btBroadphaseInterface *mBroadphase;
    btCollisionDispatcher *mDispatcher;
    btConstraintSolver *mSolver;
+   btParallelConstraintSolver *mParallelSolver;
    btDefaultCollisionConfiguration *mCollisionConfiguration;
   	btThreadSupportInterface *mThreadSupportCollision;
+   btThreadSupportInterface *mThreadSupportSolver;
 
    bool mErrorReport;
 

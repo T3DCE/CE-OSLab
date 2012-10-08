@@ -34,6 +34,32 @@
 #include "scene/sceneRenderState.h"
 #include "T3D/gameBase/gameProcess.h"
 
+btThreadSupportInterface* createSolverThreadSupport(int maxNumThreads)
+{
+//#define SEQUENTIAL
+#ifdef SEQUENTIAL
+	SequentialThreadSupport::SequentialThreadConstructionInfo tci("solverThreads",SolverThreadFunc,SolverlsMemoryFunc);
+	SequentialThreadSupport* threadSupport = new SequentialThreadSupport(tci);
+	threadSupport->startSPU();
+#else
+
+#ifdef _WIN32
+	Win32ThreadSupport::Win32ThreadConstructionInfo threadConstructionInfo("solverThreads",SolverThreadFunc,SolverlsMemoryFunc,maxNumThreads);
+	Win32ThreadSupport* threadSupport = new Win32ThreadSupport(threadConstructionInfo);
+	threadSupport->startSPU();
+#elif defined (USE_PTHREADS)
+	PosixThreadSupport::ThreadConstructionInfo solverConstructionInfo("solver", SolverThreadFunc, SolverlsMemoryFunc, maxNumThreads);
+	PosixThreadSupport* threadSupport = new PosixThreadSupport(solverConstructionInfo);
+#else
+	SequentialThreadSupport::SequentialThreadConstructionInfo tci("solverThreads",SolverThreadFunc,SolverlsMemoryFunc);
+	SequentialThreadSupport* threadSupport = new SequentialThreadSupport(tci);
+	threadSupport->startSPU();
+#endif
+
+#endif
+
+	return threadSupport;
+}
 
 BtWorld::BtWorld() :
    mProcessList( NULL ),
@@ -58,7 +84,9 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
 
    // TODO: There is something wrong with multithreading
    // and compound convex shapes... so disable it for now.
-   static const U32 smMaxThreads = 1;
+   //static const U32 smMaxThreads = 1;
+	static const U32 smMaxThreads = Platform::SystemInfo.processor.numLogicalProcessors;
+	Con::printf( "Bullet Physics parallel threads: [%i]", smMaxThreads);
 
    // Different initialization with threading enabled.
    if ( smMaxThreads > 1 )
@@ -89,8 +117,18 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
    mBroadphase = sweepBP;
    sweepBP->getOverlappingPairCache()->setInternalGhostPairCallback( new btGhostPairCallback() );
 
-   // The default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded).
-   mSolver = new btSequentialImpulseConstraintSolver;
+   if ( smMaxThreads > 1 )
+	{
+		mThreadSupportSolver = createSolverThreadSupport(smMaxThreads);
+		mSolver = new btParallelConstraintSolver(mThreadSupportSolver);
+		//this solver requires the contacts to be in a contiguous pool, so avoid dynamic allocation
+		mDispatcher->setDispatcherFlags(btCollisionDispatcher::CD_DISABLE_CONTACTPOOL_DYNAMIC_ALLOCATION);
+	} 
+   else 
+   {
+		// The default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded).
+		mSolver = new btSequentialImpulseConstraintSolver;
+	}
 
    mDynamicsWorld = new btDiscreteDynamicsWorld( mDispatcher, mBroadphase, mSolver, mCollisionConfiguration );
    if ( !mDynamicsWorld )
@@ -101,8 +139,10 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
 
    // Removing the randomization in the solver is required
    // to make the simulation deterministic.
+   //mDynamicsWorld->getSolverInfo().m_numIterations = 4;
    mDynamicsWorld->getSolverInfo().m_solverMode &= ~SOLVER_RANDMIZE_ORDER;
-
+   if ( smMaxThreads > 1 )
+		mDynamicsWorld->getDispatchInfo().m_enableSPU = true;
    mDynamicsWorld->setGravity( btCast<btVector3>( mGravity ) );
 
    AssertFatal( processList, "BtWorld::init() - We need a process list to create the world!" );

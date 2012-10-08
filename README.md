@@ -1,10 +1,17 @@
 Torque3D CE
 ===========
 
-This is a work-in-progress port of the [Torque 3D Community Edition](https://lab.collateral-studios.eu/trac/wiki) project to the MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com)
+This is a work-in-progress port of the [Torque 3D Community Edition](https://lab.collateral-studios.eu/trac/wiki) project to the MIT Licensed Open Source version of [Torque 3D](http://www.garagegames.com/products/torque-3d) from [GarageGames](http://www.garagegames.com).
+
+* All changes will be verified as working against the "master" branch, and the "master" branch only.  
+* The "development" branch will eventually be removed from this repository, and all other branches found here are for transitional work only.
+* Binaries and other executables will rarely, if ever, be updated here.  You are responsible for compiling the project on your end.
+* The testing project will be based upon the Full Template with Bullet and other optional build components enabled.  Look to the Full Template for example if using any other template project.
+* Any Community Edition member who has read & write access to the license restricted repository can ask for read & write access to this GitHub repository as well.  All others will be evaluated.
+* Pull requests are welcome!
 
 More Information
-----------------
+---------------- 
 
 * [Torque 3D Community Edition Is Alive](http://www.garagegames.com/community/blogs/view/21727)
 * [Torque 3D Community Edition Discussion Thread](http://www.garagegames.com/community/forums/viewthread/130724)

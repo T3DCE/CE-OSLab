@@ -32,7 +32,7 @@ subject to the following restrictions:
 #define DBVT_IMPL_SSE			1	// SSE
 
 // Template implementation of ICollide
-#ifdef WIN32
+#ifdef _WIN32
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
 #define	DBVT_USE_TEMPLATE		1
 #else
@@ -57,7 +57,7 @@ subject to the following restrictions:
 // Specific methods implementation
 
 //SSE gives errors on a MSVC 7.1
-#if defined (BT_USE_SSE) && defined (WIN32)
+#if defined (BT_USE_SSE) && defined (_WIN32)
 #define DBVT_SELECT_IMPL		DBVT_IMPL_SSE
 #define DBVT_MERGE_IMPL			DBVT_IMPL_SSE
 #define DBVT_INT0_IMPL			DBVT_IMPL_SSE
@@ -92,7 +92,7 @@ subject to the following restrictions:
 #endif
 
 #if DBVT_USE_MEMMOVE
-#ifndef __CELLOS_LV2__
+#if !defined( __CELLOS_LV2__) && !defined(__MWERKS__)
 #include <memory.h>
 #endif
 #include <string.h>
@@ -259,6 +259,7 @@ struct	btDbvt
 
 	
 	btAlignedObjectArray<sStkNN>	m_stkStack;
+	mutable btAlignedObjectArray<const btDbvtNode*>	m_rayTestStack;
 
 
 	// Methods
@@ -947,6 +948,7 @@ inline void		btDbvt::rayTestInternal(	const btDbvtNode* root,
 								const btVector3& aabbMax,
 								DBVT_IPOLICY) const
 {
+        (void) rayTo;
 	DBVT_CHECKTYPE
 	if(root)
 	{
@@ -954,15 +956,15 @@ inline void		btDbvt::rayTestInternal(	const btDbvtNode* root,
 
 		int								depth=1;
 		int								treshold=DOUBLE_STACKSIZE-2;
-		btAlignedObjectArray<const btDbvtNode*>	stack;
+		btAlignedObjectArray<const btDbvtNode*>&	stack = m_rayTestStack;
 		stack.resize(DOUBLE_STACKSIZE);
 		stack[0]=root;
 		btVector3 bounds[2];
 		do	
 		{
 			const btDbvtNode*	node=stack[--depth];
-			bounds[0] = node->volume.Mins()+aabbMin;
-			bounds[1] = node->volume.Maxs()+aabbMax;
+			bounds[0] = node->volume.Mins()-aabbMax;
+			bounds[1] = node->volume.Maxs()-aabbMin;
 			btScalar tmin=1.f,lambda_min=0.f;
 			unsigned int result1=false;
 			result1 = btRayAabb2(rayFrom,rayDirectionInverse,signs,bounds,tmin,lambda_min,lambda_max);

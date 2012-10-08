@@ -287,7 +287,7 @@ public:
    virtual ~ShadowMapParams();
 
    /// The LightInfoEx hook type.
-   static LightInfoExType Type;
+   static const LightInfoExType Type;
 
    // LightInfoEx
    virtual void set( const LightInfoEx *ex );

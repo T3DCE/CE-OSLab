@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_TRIANGLE_MESH_SHAPE_H
-#define BT_TRIANGLE_MESH_SHAPE_H
+#ifndef TRIANGLE_MESH_SHAPE_H
+#define TRIANGLE_MESH_SHAPE_H
 
 #include "btConcaveShape.h"
 #include "btStridingMeshInterface.h"
@@ -79,11 +79,7 @@ public:
 	//debugging
 	virtual const char*	getName()const {return "TRIANGLEMESH";}
 
-	
 
 };
 
-
-
-
-#endif //BT_TRIANGLE_MESH_SHAPE_H
+#endif //TRIANGLE_MESH_SHAPE_H

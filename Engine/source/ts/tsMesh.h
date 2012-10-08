@@ -413,10 +413,7 @@ public:
    {
       enum Constants
       {
-         // Increase the BonesPerVert value for complex skinned mesh -
-         // http://www.garagegames.com/community/forums/viewthread/127435
-         //maxBonePerVert = 16,  // Abitrarily chosen
-         maxBonePerVert = 128,
+         maxBonePerVert = 16,  // Abitrarily chosen
       };
 
       /// @name Batch by vertex

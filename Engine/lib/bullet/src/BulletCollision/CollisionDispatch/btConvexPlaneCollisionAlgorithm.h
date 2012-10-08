@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_CONVEX_PLANE_COLLISION_ALGORITHM_H
-#define BT_CONVEX_PLANE_COLLISION_ALGORITHM_H
+#ifndef CONVEX_PLANE_COLLISION_ALGORITHM_H
+#define CONVEX_PLANE_COLLISION_ALGORITHM_H
 
 #include "BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h"
 #include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h"
@@ -61,7 +61,7 @@ public:
 			
 		CreateFunc() 
 			: m_numPerturbationIterations(1),
-			m_minimumPointsPerturbationThreshold(0)
+			m_minimumPointsPerturbationThreshold(1)
 		{
 		}
 		
@@ -80,5 +80,5 @@ public:
 
 };
 
-#endif //BT_CONVEX_PLANE_COLLISION_ALGORITHM_H
+#endif //CONVEX_PLANE_COLLISION_ALGORITHM_H
 

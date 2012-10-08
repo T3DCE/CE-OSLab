@@ -57,14 +57,8 @@ BaseMatInstance* InstancingMaterialHook::getInstancingMat( BaseMatInstance *matI
       FeatureSet features( matInst->getRequestedFeatures() );
       features.addFeature( MFT_UseInstancing ); 
 
-      // TextureTarget Fix - see http://www.garagegames.com/community/blogs/view/21019
-      Material::sAllowTextureTargetAssignment = true;
-
       if ( !instMat->init( features, matInst->getVertexFormat() ) )
          SAFE_DELETE( instMat );
-
-      // TextureTarget Fix - see http://www.garagegames.com/community/blogs/view/21019
-      Material::sAllowTextureTargetAssignment = false;
 
       hook->mMatInst = instMat;
    }

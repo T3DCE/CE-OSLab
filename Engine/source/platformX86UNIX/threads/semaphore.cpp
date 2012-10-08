@@ -55,25 +55,13 @@ Semaphore::~Semaphore()
   delete mData;
 }
 
-bool Semaphore::acquire(bool block, S32 timeoutMS)
+bool Semaphore::acquire(bool block)
 {
-   AssertFatal(mData && mData->semaphore, "Semaphore::acquire - Invalid semaphore.");
+   AssertFatal(mData, "Semaphore::acquire - Invalid semaphore.");
    if (block)
    {
-      // Semaphore acquiring is different from the MacOS/Win realization because SDL_SemWaitTimeout() with "infinite" timeout can be too heavy on some platforms.
-      // (see "man SDL_SemWaitTimeout(3)" for more info)
-      // "man" states to avoid the use of SDL_SemWaitTimeout at all, but at current stage this looks like a valid and working solution, so keeping it this way.
-      // [bank / Feb-2010]
-      if (timeoutMS == -1)
-      {
-         if (SDL_SemWait(mData->semaphore) < 0)
-            AssertFatal(false, "Semaphore::acquie - Wait failed.");
-      }
-      else
-      {
-         if (SDL_SemWaitTimeout(mData->semaphore, timeoutMS) < 0)
-            AssertFatal(false, "Semaphore::acquie - Wait with timeout failed.");
-      }
+      if (SDL_SemWait(mData->semaphore) < 0)
+         AssertFatal(false, "Semaphore::acquie - Wait failed.");
       return (true);
    }
    else

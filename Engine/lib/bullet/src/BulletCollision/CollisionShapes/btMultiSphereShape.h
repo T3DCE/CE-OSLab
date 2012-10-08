@@ -13,15 +13,13 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MULTI_SPHERE_MINKOWSKI_H
-#define BT_MULTI_SPHERE_MINKOWSKI_H
+#ifndef MULTI_SPHERE_MINKOWSKI_H
+#define MULTI_SPHERE_MINKOWSKI_H
 
 #include "btConvexInternalShape.h"
 #include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" // for the types
 #include "LinearMath/btAlignedObjectArray.h"
 #include "LinearMath/btAabbUtil2.h"
-
-
 
 ///The btMultiSphereShape represents the convex hull of a collection of spheres. You can create special capsules or other smooth volumes.
 ///It is possible to animate the spheres for deformation, but call 'recalcLocalAabb' after changing any sphere position/radius
@@ -63,37 +61,8 @@ public:
 		return "MultiSphere";
 	}
 
-	virtual	int	calculateSerializeBufferSize() const;
-
-	///fills the dataBuffer and returns the struct name (and 0 on failure)
-	virtual	const char*	serialize(void* dataBuffer, btSerializer* serializer) const;
-
 
 };
 
 
-struct	btPositionAndRadius
-{
-	btVector3FloatData	m_pos;
-	float		m_radius;
-};
-
-struct	btMultiSphereShapeData
-{
-	btConvexInternalShapeData	m_convexInternalShapeData;
-
-	btPositionAndRadius	*m_localPositionArrayPtr;
-	int				m_localPositionArraySize;
-	char	m_padding[4];
-};
-
-
-
-SIMD_FORCE_INLINE	int	btMultiSphereShape::calculateSerializeBufferSize() const
-{
-	return sizeof(btMultiSphereShapeData);
-}
-
-
-
-#endif //BT_MULTI_SPHERE_MINKOWSKI_H
+#endif //MULTI_SPHERE_MINKOWSKI_H

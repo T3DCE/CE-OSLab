@@ -13,27 +13,13 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_MANIFOLD_CONTACT_POINT_H
-#define BT_MANIFOLD_CONTACT_POINT_H
+#ifndef MANIFOLD_CONTACT_POINT_H
+#define MANIFOLD_CONTACT_POINT_H
 
 #include "LinearMath/btVector3.h"
 #include "LinearMath/btTransformUtil.h"
 
-#ifdef PFX_USE_FREE_VECTORMATH
-	#include "physics_effects/base_level/solver/pfx_constraint_row.h"
-typedef sce::PhysicsEffects::PfxConstraintRow btConstraintRow;
-#else
-	// Don't change following order of parameters
-	ATTRIBUTE_ALIGNED16(struct) btConstraintRow {
-		btScalar m_normal[3];
-		btScalar m_rhs;
-		btScalar m_jacDiagInv;
-		btScalar m_lowerLimit;
-		btScalar m_upperLimit;
-		btScalar m_accumImpulse;
-	};
-	typedef btConstraintRow PfxConstraintRow;
-#endif //PFX_USE_FREE_VECTORMATH
+
 
 
 
@@ -48,10 +34,6 @@ class btManifoldPoint
 				m_lateralFrictionInitialized(false),
 				m_appliedImpulseLateral1(0.f),
 				m_appliedImpulseLateral2(0.f),
-				m_contactMotion1(0.f),
-				m_contactMotion2(0.f),
-				m_contactCFM1(0.f),
-				m_contactCFM2(0.f),
 				m_lifeTime(0)
 			{
 			}
@@ -70,15 +52,10 @@ class btManifoldPoint
 					m_lateralFrictionInitialized(false),
 					m_appliedImpulseLateral1(0.f),
 					m_appliedImpulseLateral2(0.f),
-					m_contactMotion1(0.f),
-					m_contactMotion2(0.f),
-					m_contactCFM1(0.f),
-					m_contactCFM2(0.f),
 					m_lifeTime(0)
 			{
-				mConstraintRow[0].m_accumImpulse = 0.f;
-				mConstraintRow[1].m_accumImpulse = 0.f;
-				mConstraintRow[2].m_accumImpulse = 0.f;
+				
+					
 			}
 
 			
@@ -106,20 +83,10 @@ class btManifoldPoint
 			bool			m_lateralFrictionInitialized;
 			btScalar		m_appliedImpulseLateral1;
 			btScalar		m_appliedImpulseLateral2;
-			btScalar		m_contactMotion1;
-			btScalar		m_contactMotion2;
-			btScalar		m_contactCFM1;
-			btScalar		m_contactCFM2;
-
 			int				m_lifeTime;//lifetime of the contactpoint in frames
 			
 			btVector3		m_lateralFrictionDir1;
 			btVector3		m_lateralFrictionDir2;
-
-
-
-			btConstraintRow mConstraintRow[3];
-
 
 			btScalar getDistance() const
 			{
@@ -155,4 +122,4 @@ class btManifoldPoint
 
 	};
 
-#endif //BT_MANIFOLD_CONTACT_POINT_H
+#endif //MANIFOLD_CONTACT_POINT_H

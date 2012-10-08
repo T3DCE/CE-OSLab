@@ -112,9 +112,6 @@ public:
    // The density of this object used for water buoyancy effects.
    F32 buoyancyDensity;
 
-   // CCD
-   F32 ccdMotionThreshold;
-   F32 ccdSweptSphereRadius;
 
    enum SimType
    {

@@ -14,8 +14,8 @@ subject to the following restrictions:
 */
 
 
-#ifndef BT_SUBSIMPLEX_CONVEX_CAST_H
-#define BT_SUBSIMPLEX_CONVEX_CAST_H
+#ifndef SUBSIMPLEX_CONVEX_CAST_H
+#define SUBSIMPLEX_CONVEX_CAST_H
 
 #include "btConvexCast.h"
 #include "btSimplexSolverInterface.h"
@@ -47,4 +47,4 @@ public:
 
 };
 
-#endif //BT_SUBSIMPLEX_CONVEX_CAST_H
+#endif //SUBSIMPLEX_CONVEX_CAST_H

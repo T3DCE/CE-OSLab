@@ -15,8 +15,8 @@ subject to the following restrictions:
 
 
 
-#ifndef BT_GJK_CONVEX_CAST_H
-#define BT_GJK_CONVEX_CAST_H
+#ifndef GJK_CONVEX_CAST_H
+#define GJK_CONVEX_CAST_H
 
 #include "BulletCollision/CollisionShapes/btCollisionMargin.h"
 
@@ -47,4 +47,4 @@ public:
 
 };
 
-#endif //BT_GJK_CONVEX_CAST_H
+#endif //GJK_CONVEX_CAST_H

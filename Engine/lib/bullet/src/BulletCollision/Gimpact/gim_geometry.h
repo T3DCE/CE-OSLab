@@ -2,7 +2,7 @@
 #define GIM_GEOMETRY_H_INCLUDED
 
 /*! \file gim_geometry.h
-\author Francisco Leon Najera
+\author Francisco Len Nßjera
 */
 /*
 -----------------------------------------------------------------------------

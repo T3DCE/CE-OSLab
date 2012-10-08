@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_OBB_BOX_MINKOWSKI_H
-#define BT_OBB_BOX_MINKOWSKI_H
+#ifndef OBB_BOX_MINKOWSKI_H
+#define OBB_BOX_MINKOWSKI_H
 
 #include "btPolyhedralConvexShape.h"
 #include "btCollisionMargin.h"
@@ -41,7 +41,7 @@ public:
 	
 	const btVector3& getHalfExtentsWithoutMargin() const
 	{
-		return m_implicitShapeDimensions;//scaling is included, margin is not
+		return m_implicitShapeDimensions;//changed in Bullet 2.63: assume the scaling and margin are included
 	}
 	
 
@@ -80,7 +80,13 @@ public:
 	}
 
 
-	btBoxShape( const btVector3& boxHalfExtents);
+	btBoxShape( const btVector3& boxHalfExtents) 
+		: btPolyhedralConvexShape()
+	{
+		m_shapeType = BOX_SHAPE_PROXYTYPE;
+		btVector3 margin(getMargin(),getMargin(),getMargin());
+		m_implicitShapeDimensions = (boxHalfExtents * m_localScaling) - margin;
+	};
 
 	virtual void setMargin(btScalar collisionMargin)
 	{
@@ -139,7 +145,7 @@ public:
 
 	virtual void getVertex(int i,btVector3& vtx) const
 	{
-		btVector3 halfExtents = getHalfExtentsWithMargin();
+		btVector3 halfExtents = getHalfExtentsWithoutMargin();
 
 		vtx = btVector3(
 				halfExtents.x() * (1-(i&1)) - halfExtents.x() * (i&1),
@@ -306,7 +312,6 @@ public:
 
 };
 
-
-#endif //BT_OBB_BOX_MINKOWSKI_H
+#endif //OBB_BOX_MINKOWSKI_H
 
 

@@ -14,8 +14,8 @@ subject to the following restrictions:
 
 
 
-#ifndef BT_GEN_LIST_H
-#define BT_GEN_LIST_H
+#ifndef GEN_LIST_H
+#define GEN_LIST_H
 
 class btGEN_Link {
 public:
@@ -67,7 +67,7 @@ private:
     btGEN_Link m_tail;
 };
 
-#endif //BT_GEN_LIST_H
+#endif
 
 
 

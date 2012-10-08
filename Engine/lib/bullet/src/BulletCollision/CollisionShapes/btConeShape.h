@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_CONE_MINKOWSKI_H
-#define BT_CONE_MINKOWSKI_H
+#ifndef CONE_MINKOWSKI_H
+#define CONE_MINKOWSKI_H
 
 #include "btConvexInternalShape.h"
 #include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" // for the types
@@ -81,9 +81,6 @@ public:
 		{
 			return m_coneIndices[1];
 		}
-
-	virtual void	setLocalScaling(const btVector3& scaling);
-
 };
 
 ///btConeShape implements a Cone shape, around the X axis
@@ -99,5 +96,5 @@ class btConeShapeZ : public btConeShape
 	public:
 		btConeShapeZ(btScalar radius,btScalar height);
 };
-#endif //BT_CONE_MINKOWSKI_H
+#endif //CONE_MINKOWSKI_H
 

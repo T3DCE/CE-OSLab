@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_CONVEX_2D_CONVEX_2D_ALGORITHM_H
-#define BT_CONVEX_2D_CONVEX_2D_ALGORITHM_H
+#ifndef CONVEX_2D_CONVEX_2D_ALGORITHM_H
+#define CONVEX_2D_CONVEX_2D_ALGORITHM_H
 
 #include "BulletCollision/CollisionDispatch/btActivatingCollisionAlgorithm.h"
 #include "BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h"
@@ -92,4 +92,4 @@ public:
 
 };
 
-#endif //BT_CONVEX_2D_CONVEX_2D_ALGORITHM_H
+#endif //CONVEX_2D_CONVEX_2D_ALGORITHM_H

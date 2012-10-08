@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_TRIANGLE_CALLBACK_H
-#define BT_TRIANGLE_CALLBACK_H
+#ifndef TRIANGLE_CALLBACK_H
+#define TRIANGLE_CALLBACK_H
 
 #include "LinearMath/btVector3.h"
 
@@ -39,4 +39,4 @@ public:
 
 
 
-#endif //BT_TRIANGLE_CALLBACK_H
+#endif //TRIANGLE_CALLBACK_H

@@ -27,10 +27,12 @@
    POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef BT_AOS_VECTORMATH_BULLET_CONVERT_H
-#define BT_AOS_VECTORMATH_BULLET_CONVERT_H
+#ifndef AOS_VECTORMATH_BULLET_CONVERT_H
+#define AOS_VECTORMATH_BULLET_CONVERT_H
 
-#include "PlatformDefinitions.h"
+#include <vectormath_aos.h>
+//#include "BulletMultiThreaded/vectormath/scalar/cpp/vectormath_aos.h"
+
 #include "LinearMath/btVector3.h"
 #include "LinearMath/btQuaternion.h"
 #include "LinearMath/btMatrix3x3.h"
@@ -70,4 +72,4 @@ inline Vectormath::Aos::Matrix3	getVmMatrix3(const btMatrix3x3& btMat)
 }
 
 
-#endif //BT_AOS_VECTORMATH_BULLET_CONVERT_H
+#endif //AOS_VECTORMATH_BULLET_CONVERT_H

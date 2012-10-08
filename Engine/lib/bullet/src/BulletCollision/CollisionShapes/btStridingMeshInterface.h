@@ -13,14 +13,12 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_STRIDING_MESHINTERFACE_H
-#define BT_STRIDING_MESHINTERFACE_H
+#ifndef STRIDING_MESHINTERFACE_H
+#define STRIDING_MESHINTERFACE_H
 
 #include "LinearMath/btVector3.h"
 #include "btTriangleCallback.h"
 #include "btConcaveShape.h"
-
-
 
 
 
@@ -91,72 +89,8 @@ class  btStridingMeshInterface
 			m_scaling = scaling;
 		}
 
-		virtual	int	calculateSerializeBufferSize() const;
-
-		///fills the dataBuffer and returns the struct name (and 0 on failure)
-		virtual	const char*	serialize(void* dataBuffer, btSerializer* serializer) const;
-
+	
 
 };
 
-struct	btIntIndexData
-{
-	int	m_value;
-};
-
-struct	btShortIntIndexData
-{
-	short m_value;
-	char m_pad[2];
-};
-
-struct	btShortIntIndexTripletData
-{
-	short	m_values[3];
-	char	m_pad[2];
-};
-
-struct	btCharIndexTripletData
-{
-	unsigned char m_values[3];
-	char	m_pad;
-};
-
-
-///do not change those serialization structures, it requires an updated sBulletDNAstr/sBulletDNAstr64
-struct	btMeshPartData
-{
-	btVector3FloatData			*m_vertices3f;
-	btVector3DoubleData			*m_vertices3d;
-
-	btIntIndexData				*m_indices32;
-	btShortIntIndexTripletData	*m_3indices16;
-	btCharIndexTripletData		*m_3indices8;
-
-	btShortIntIndexData			*m_indices16;//backwards compatibility
-
-	int                     m_numTriangles;//length of m_indices = m_numTriangles
-	int                     m_numVertices;
-};
-
-
-///do not change those serialization structures, it requires an updated sBulletDNAstr/sBulletDNAstr64
-struct	btStridingMeshInterfaceData
-{
-	btMeshPartData	*m_meshPartsPtr;
-	btVector3FloatData	m_scaling;
-	int	m_numMeshParts;
-	char m_padding[4];
-};
-
-
-
-
-SIMD_FORCE_INLINE	int	btStridingMeshInterface::calculateSerializeBufferSize() const
-{
-	return sizeof(btStridingMeshInterfaceData);
-}
-
-
-
-#endif //BT_STRIDING_MESHINTERFACE_H
+#endif //STRIDING_MESHINTERFACE_H

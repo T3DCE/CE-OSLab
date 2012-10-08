@@ -24,11 +24,11 @@ subject to the following restrictions:
 
 #include <math.h>
 
+//#include "BulletMultiThreaded/vectormath/scalar/cpp/vectormath_aos.h"
+#include <vectormath_aos.h>
 
-#include "../PlatformDefinitions.h"
 
-
-
+using namespace Vectormath::Aos;
 
 enum FeatureType { F, E, V };
 
@@ -39,21 +39,21 @@ enum FeatureType { F, E, V };
 class Box
 {
 public:
-	vmVector3 mHalf;
+	Vector3 half;
 
 	inline Box()
 	{}
-	inline Box(PE_REF(vmVector3) half_);
+	inline Box(PE_REF(Vector3) half_);
 	inline Box(float hx, float hy, float hz);
 
-	inline void Set(PE_REF(vmVector3) half_);
+	inline void Set(PE_REF(Vector3) half_);
 	inline void Set(float hx, float hy, float hz);
 
-	inline vmVector3 GetAABB(const vmMatrix3& rotation) const;
+	inline Vector3 GetAABB(const Matrix3& rotation) const;
 };
 
 inline
-Box::Box(PE_REF(vmVector3) half_)
+Box::Box(PE_REF(Vector3) half_)
 {
 	Set(half_);
 }
@@ -66,23 +66,23 @@ Box::Box(float hx, float hy, float hz)
 
 inline
 void
-Box::Set(PE_REF(vmVector3) half_)
+Box::Set(PE_REF(Vector3) half_)
 {
-	mHalf = half_;
+	half = half_;
 }
 
 inline
 void
 Box::Set(float hx, float hy, float hz)
 {
-	mHalf = vmVector3(hx, hy, hz);
+	half = Vector3(hx, hy, hz);
 }
 
 inline
-vmVector3
-Box::GetAABB(const vmMatrix3& rotation) const
+Vector3
+Box::GetAABB(const Matrix3& rotation) const
 {
-	return absPerElem(rotation) * mHalf;
+	return absPerElem(rotation) * half;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ class BoxPoint
 public:
 	BoxPoint() : localPoint(0.0f) {}
 
-	vmPoint3      localPoint;
+	Point3      localPoint;
 	FeatureType featureType;
 	int         featureIdx;
 

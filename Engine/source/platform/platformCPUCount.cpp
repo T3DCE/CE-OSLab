@@ -522,9 +522,9 @@ next:
                // processors per core
 
                tblSMTID[j]  = GetNzbSubID(apicID, MaxLPPerCore, 0);
-               unsigned char maxCorePPP = MaxCorePerPhysicalProc();
-               unsigned char maskWidth = find_maskwidth(MaxLPPerCore);
-               tblCoreID[j] = GetNzbSubID(apicID, maxCorePPP, maskWidth);
+               tblCoreID[j] = GetNzbSubID(apicID, 
+                  MaxCorePerPhysicalProc(),
+                  (unsigned char) find_maskwidth(MaxLPPerCore));
 
                // Extract package ID, assume single cluster.
                // Shift value is the mask width for max Logical per package

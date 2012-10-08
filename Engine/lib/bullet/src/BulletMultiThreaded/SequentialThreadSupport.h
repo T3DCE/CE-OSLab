@@ -17,8 +17,8 @@ subject to the following restrictions:
 #include "PlatformDefinitions.h"
 
 
-#ifndef BT_SEQUENTIAL_THREAD_SUPPORT_H
-#define BT_SEQUENTIAL_THREAD_SUPPORT_H
+#ifndef SEQUENTIAL_THREAD_SUPPORT_H
+#define SEQUENTIAL_THREAD_SUPPORT_H
 
 #include "LinearMath/btAlignedObjectArray.h"
 
@@ -51,7 +51,7 @@ private:
 public:
 	struct	SequentialThreadConstructionInfo
 	{
-		SequentialThreadConstructionInfo (const char* uniqueName,
+		SequentialThreadConstructionInfo (char* uniqueName,
 									SequentialThreadFunc userThreadFunc,
 									SequentiallsMemorySetupFunc	lsMemoryFunc
 									)
@@ -62,7 +62,7 @@ public:
 
 		}
 
-		const char*						m_uniqueName;
+		char*						m_uniqueName;
 		SequentialThreadFunc		m_userThreadFunc;
 		SequentiallsMemorySetupFunc	m_lsMemoryFunc;
 	};
@@ -85,12 +85,8 @@ public:
 	{
 		return 1;
 	}
-	virtual btBarrier*	createBarrier();
-
-	virtual btCriticalSection* createCriticalSection();
-	
 
 };
 
-#endif //BT_SEQUENTIAL_THREAD_SUPPORT_H
+#endif //SEQUENTIAL_THREAD_SUPPORT_H
 

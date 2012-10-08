@@ -2636,14 +2636,10 @@ void TSMesh::disassemble()
       {
          const TSDrawPrimitive& prim = primitives[i];
 
-         // only optimize triangle lists (strips and fans are assumed to be already optimized)
-         if ( (prim.matIndex & TSDrawPrimitive::TypeMask) == TSDrawPrimitive::Triangles )
-         {
-            TriListOpt::OptimizeTriangleOrdering(verts.size(), prim.numElements,
-               indices.address() + prim.start, tmpIdxs.address());
-            dCopyArray(indices.address() + prim.start, tmpIdxs.address(), 
-               prim.numElements);
-         }
+         TriListOpt::OptimizeTriangleOrdering(verts.size(), prim.numElements,
+            indices.address() + prim.start, tmpIdxs.address());
+         dCopyArray(indices.address() + prim.start, tmpIdxs.address(), 
+            prim.numElements);
       }
    }
 

@@ -27,8 +27,6 @@ class btTypedConstraint;
 class btActionInterface;
 
 class btIDebugDraw;
-struct InplaceSolverIslandCallback;
-
 #include "LinearMath/btAlignedObjectArray.h"
 
 
@@ -37,9 +35,6 @@ struct InplaceSolverIslandCallback;
 class btDiscreteDynamicsWorld : public btDynamicsWorld
 {
 protected:
-	
-    btAlignedObjectArray<btTypedConstraint*>	m_sortedConstraints;
-	InplaceSolverIslandCallback* 	m_solverIslandCallback;
 
 	btConstraintSolver*	m_constraintSolver;
 
@@ -82,7 +77,8 @@ protected:
 
 	virtual void	saveKinematicState(btScalar timeStep);
 
-	void	serializeRigidBodies(btSerializer* serializer);
+	void	debugDrawSphere(btScalar radius, const btTransform& transform, const btVector3& color);
+
 
 public:
 
@@ -139,6 +135,7 @@ public:
 	///removeCollisionObject will first check if it is a rigid body, if so call removeRigidBody otherwise call btCollisionWorld::removeCollisionObject
 	virtual void	removeCollisionObject(btCollisionObject* collisionObject);
 
+	void	debugDrawObject(const btTransform& worldTransform, const btCollisionShape* shape, const btVector3& color);
 
 	void	debugDrawConstraint(btTypedConstraint* constraint);
 
@@ -194,9 +191,6 @@ public:
 	{
 		return m_synchronizeAllMotionStates;
 	}
-
-	///Preliminary serialization test for Bullet 2.76. Loading those files requires a separate parser (see Bullet/Demos/SerializeDemo)
-	virtual	void	serialize(btSerializer* serializer);
 
 };
 

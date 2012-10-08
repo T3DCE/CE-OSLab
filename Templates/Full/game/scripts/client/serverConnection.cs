@@ -222,13 +222,6 @@ function disconnectedCleanup()
       Canvas.setContent( MainMenuGui );
    else if (isObject( UnifiedMainMenuGui ))
       Canvas.setContent( UnifiedMainMenuGui );
-
-   // Before we destroy the client physics world
-   // make sure all ServerConnection objects are deleted.
-   if(isObject(ServerConnection))
-   {
-      ServerConnection.deleteAllObjects();
-   }
    
    // We can now delete the client physics simulation.
    physicsDestroyWorld( "client" );                 

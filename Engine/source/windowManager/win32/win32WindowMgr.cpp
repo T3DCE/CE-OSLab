@@ -163,7 +163,7 @@ PlatformWindow *Win32WindowManager::createWindow(GFXDevice *device, const GFXVid
    w32w->mWindowHandle = CreateWindowEx(
       dwExStyle,
       Win32Window::getWindowClassName(),           //class name
-      String( TORQUE_APP_NAME ).utf16(),  //window title
+      String( getEngineProductString() ).utf16(),  //window title
       dwStyle,                                     //style - need clip siblings/children for opengl
       0,
       0,

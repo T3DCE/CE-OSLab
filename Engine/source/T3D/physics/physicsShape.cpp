@@ -75,8 +75,6 @@ PhysicsShapeData::PhysicsShapeData()
       angularSleepThreshold( 1.0f ),
       waterDampingScale( 1.0f ),
       buoyancyDensity( 0.0f ),
-      ccdMotionThreshold(0.0f),
-      ccdSweptSphereRadius(0.0f),
       simType( SimType_ClientServer )      
 {
 }
@@ -167,21 +165,7 @@ void PhysicsShapeData::initPersistFields()
          "The result of the calculated buoyancy is relative to the density of the WaterObject the PhysicsShape is within.\n\n"
          "@see WaterObject::density");
 
-   endGroup("Physics");   
-
-	addGroup("CCD");
-
-		addField("ccdMotionThreshold", TypeF32, Offset(ccdMotionThreshold, PhysicsShapeData),
-			"@brief -.\n\n"
-			"-.\n\n"
-			"@see -");
-
-		addField("ccdSweptSphereRadius", TypeF32, Offset(ccdSweptSphereRadius, PhysicsShapeData),
-			"@-.\n\n"
-			"-.\n\n"
-			"@see -");
-
-	endGroup("CCD");
+   endGroup( "Physics" );   
 
    addGroup( "Networking" );
 
@@ -208,9 +192,6 @@ void PhysicsShapeData::packData( BitStream *stream )
    stream->write( waterDampingScale );
    stream->write( buoyancyDensity );
 
-   stream->write(ccdMotionThreshold);
-   stream->write(ccdSweptSphereRadius);
-
    stream->writeInt( simType, SimType_Bits );
 
    stream->writeRangedU32( debris ? debris->getId() : 0, 0, DataBlockObjectIdLast );
@@ -234,9 +215,6 @@ void PhysicsShapeData::unpackData( BitStream *stream )
    stream->read( &angularSleepThreshold );
    stream->read( &waterDampingScale );
    stream->read( &buoyancyDensity );
-
-   stream->read(&ccdMotionThreshold);
-   stream->read(&ccdSweptSphereRadius);
 
    simType = (SimType)stream->readInt( SimType_Bits );
 
@@ -774,7 +752,6 @@ bool PhysicsShape::_createShape()
    {
       mPhysicsRep->setDamping( db->linearDamping, db->angularDamping );
       mPhysicsRep->setSleepThreshold( db->linearSleepThreshold, db->angularSleepThreshold );
-      mPhysicsRep->setCCD(db->ccdMotionThreshold, db->ccdSweptSphereRadius);
    }
 
    mPhysicsRep->setTransform( getTransform() );
@@ -918,9 +895,7 @@ void PhysicsShape::interpolateTick( F32 delta )
    state.interpolate( mRenderState[1], mRenderState[0], delta );
 
    // Set the transform to the interpolated transform.
-#ifndef BULLET_MOTIONSTATES
    setRenderTransform( state.getTransform() );
-#endif
 }
 
 void PhysicsShape::processTick( const Move *move )

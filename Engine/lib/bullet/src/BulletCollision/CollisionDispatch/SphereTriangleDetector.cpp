@@ -57,6 +57,8 @@ void	SphereTriangleDetector::getClosestPoints(const ClosestPointInput& input,Res
 
 }
 
+#define MAX_OVERLAP btScalar(0.)
+
 
 
 // See also geometrictools.com
@@ -91,39 +93,48 @@ bool SphereTriangleDetector::facecontains(const btVector3 &p,const btVector3* ve
 	return pointInTriangle(vertices, lnormal, &lp);
 }
 
+///combined discrete/continuous sphere-triangle
 bool SphereTriangleDetector::collide(const btVector3& sphereCenter,btVector3 &point, btVector3& resultNormal, btScalar& depth, btScalar &timeOfImpact, btScalar contactBreakingThreshold)
 {
 
 	const btVector3* vertices = &m_triangle->getVertexPtr(0);
-	
-	btScalar radius = m_sphere->getRadius();
-	btScalar radiusWithThreshold = radius + contactBreakingThreshold;
+	const btVector3& c = sphereCenter;
+	btScalar r = m_sphere->getRadius();
+
+	btVector3 delta (0,0,0);
 
 	btVector3 normal = (vertices[1]-vertices[0]).cross(vertices[2]-vertices[0]);
 	normal.normalize();
-	btVector3 p1ToCentre = sphereCenter - vertices[0];
+	btVector3 p1ToCentre = c - vertices[0];
 	btScalar distanceFromPlane = p1ToCentre.dot(normal);
 
 	if (distanceFromPlane < btScalar(0.))
 	{
 		//triangle facing the other way
+	
 		distanceFromPlane *= btScalar(-1.);
 		normal *= btScalar(-1.);
 	}
 
-	bool isInsideContactPlane = distanceFromPlane < radiusWithThreshold;
+	btScalar contactMargin = contactBreakingThreshold;
+	bool isInsideContactPlane = distanceFromPlane < r + contactMargin;
+	bool isInsideShellPlane = distanceFromPlane < r;
 	
+	btScalar deltaDotNormal = delta.dot(normal);
+	if (!isInsideShellPlane && deltaDotNormal >= btScalar(0.0))
+		return false;
+
 	// Check for contact / intersection
 	bool hasContact = false;
 	btVector3 contactPoint;
 	if (isInsideContactPlane) {
-		if (facecontains(sphereCenter,vertices,normal)) {
+		if (facecontains(c,vertices,normal)) {
 			// Inside the contact wedge - touches a point on the shell plane
 			hasContact = true;
-			contactPoint = sphereCenter - normal*distanceFromPlane;
+			contactPoint = c - normal*distanceFromPlane;
 		} else {
 			// Could be inside one of the contact capsules
-			btScalar contactCapsuleRadiusSqr = radiusWithThreshold*radiusWithThreshold;
+			btScalar contactCapsuleRadiusSqr = (r + contactMargin) * (r + contactMargin);
 			btVector3 nearestOnEdge;
 			for (int i = 0; i < m_triangle->getNumEdges(); i++) {
 				
@@ -132,7 +143,7 @@ bool SphereTriangleDetector::collide(const btVector3& sphereCenter,btVector3 &po
 				
 				m_triangle->getEdge(i,pa,pb);
 
-				btScalar distanceSqr = SegmentSqrDistance(pa,pb,sphereCenter, nearestOnEdge);
+				btScalar distanceSqr = SegmentSqrDistance(pa,pb,c, nearestOnEdge);
 				if (distanceSqr < contactCapsuleRadiusSqr) {
 					// Yep, we're inside a capsule
 					hasContact = true;
@@ -144,27 +155,24 @@ bool SphereTriangleDetector::collide(const btVector3& sphereCenter,btVector3 &po
 	}
 
 	if (hasContact) {
-		btVector3 contactToCentre = sphereCenter - contactPoint;
+		btVector3 contactToCentre = c - contactPoint;
 		btScalar distanceSqr = contactToCentre.length2();
-
-		if (distanceSqr < radiusWithThreshold*radiusWithThreshold)
-		{
-			if (distanceSqr>SIMD_EPSILON)
-			{
-				btScalar distance = btSqrt(distanceSqr);
-				resultNormal = contactToCentre;
-				resultNormal.normalize();
-				point = contactPoint;
-				depth = -(radius-distance);
-			} else
-			{
-				btScalar distance = 0.f;
-				resultNormal = normal;
-				point = contactPoint;
-				depth = -radius;
-			}
+		if (distanceSqr < (r - MAX_OVERLAP)*(r - MAX_OVERLAP)) {
+			btScalar distance = btSqrt(distanceSqr);
+			resultNormal = contactToCentre;
+			resultNormal.normalize();
+			point = contactPoint;
+			depth = -(r-distance);
 			return true;
 		}
+
+		if (delta.dot(contactToCentre) >= btScalar(0.0)) 
+			return false;
+		
+		// Moving towards the contact point -> collision
+		point = contactPoint;
+		timeOfImpact = btScalar(0.0);
+		return true;
 	}
 	
 	return false;

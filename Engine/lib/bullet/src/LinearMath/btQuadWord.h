@@ -13,8 +13,8 @@ subject to the following restrictions:
 */
 
 
-#ifndef BT_SIMD_QUADWORD_H
-#define BT_SIMD_QUADWORD_H
+#ifndef SIMD_QUADWORD_H
+#define SIMD_QUADWORD_H
 
 #include "btScalar.h"
 #include "btMinMax.h"
@@ -177,4 +177,4 @@ protected:
 
 };
 
-#endif //BT_SIMD_QUADWORD_H
+#endif //SIMD_QUADWORD_H

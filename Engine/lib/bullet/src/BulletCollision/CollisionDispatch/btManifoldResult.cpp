@@ -63,9 +63,8 @@ void btManifoldResult::addContactPoint(const btVector3& normalOnBInWorld,const b
 {
 	btAssert(m_manifoldPtr);
 	//order in manifold needs to match
-
+	
 	if (depth > m_manifoldPtr->getContactBreakingThreshold())
-//	if (depth > m_manifoldPtr->getContactProcessingThreshold())
 		return;
 
 	bool isSwapped = m_manifoldPtr->getBody0() != m_body0;

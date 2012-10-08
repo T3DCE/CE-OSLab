@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_SPU_COLLISION_OBJECT_WRAPPER_H
-#define BT_SPU_COLLISION_OBJECT_WRAPPER_H
+#ifndef SPU_COLLISION_OBJECT_WRAPPER_H
+#define SPU_COLLISION_OBJECT_WRAPPER_H
 
 #include "PlatformDefinitions.h"
 #include "BulletCollision/CollisionDispatch/btCollisionObject.h"
@@ -37,4 +37,4 @@ public:
 };
 
 
-#endif //BT_SPU_COLLISION_OBJECT_WRAPPER_H
+#endif //SPU_COLLISION_OBJECT_WRAPPER_H

@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_SIMPLE_BROADPHASE_H
-#define BT_SIMPLE_BROADPHASE_H
+#ifndef SIMPLE_BROADPHASE_H
+#define SIMPLE_BROADPHASE_H
 
 
 #include "btOverlappingPairCache.h"
@@ -136,7 +136,6 @@ public:
 	virtual void	getAabb(btBroadphaseProxy* proxy,btVector3& aabbMin, btVector3& aabbMax ) const;
 
 	virtual void	rayTest(const btVector3& rayFrom,const btVector3& rayTo, btBroadphaseRayCallback& rayCallback, const btVector3& aabbMin=btVector3(0,0,0),const btVector3& aabbMax=btVector3(0,0,0));
-	virtual void	aabbTest(const btVector3& aabbMin, const btVector3& aabbMax, btBroadphaseAabbCallback& callback);
 		
 	btOverlappingPairCache*	getOverlappingPairCache()
 	{
@@ -167,5 +166,5 @@ public:
 
 
 
-#endif //BT_SIMPLE_BROADPHASE_H
+#endif //SIMPLE_BROADPHASE_H
 

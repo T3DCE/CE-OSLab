@@ -13,8 +13,8 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_CHARACTER_CONTROLLER_INTERFACE_H
-#define BT_CHARACTER_CONTROLLER_INTERFACE_H
+#ifndef CHARACTER_CONTROLLER_INTERFACE_H
+#define CHARACTER_CONTROLLER_INTERFACE_H
 
 #include "LinearMath/btVector3.h"
 #include "BulletDynamics/Dynamics/btActionInterface.h"
@@ -42,5 +42,4 @@ public:
 	virtual bool	onGround () const = 0;
 };
 
-#endif //BT_CHARACTER_CONTROLLER_INTERFACE_H
-
+#endif

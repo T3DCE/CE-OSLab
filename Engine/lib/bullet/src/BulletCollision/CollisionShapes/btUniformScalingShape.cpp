@@ -64,70 +64,25 @@ void	btUniformScalingShape::calculateLocalInertia(btScalar mass,btVector3& inert
 
 
 	///getAabb's default implementation is brute force, expected derived classes to implement a fast dedicated version
-void btUniformScalingShape::getAabb(const btTransform& trans,btVector3& aabbMin,btVector3& aabbMax) const
+void btUniformScalingShape::getAabb(const btTransform& t,btVector3& aabbMin,btVector3& aabbMax) const
 {
-	getAabbSlow(trans,aabbMin,aabbMax);
+	m_childConvexShape->getAabb(t,aabbMin,aabbMax);
+	btVector3 aabbCenter = (aabbMax+aabbMin)*btScalar(0.5);
+	btVector3 scaledAabbHalfExtends = (aabbMax-aabbMin)*btScalar(0.5)*m_uniformScalingFactor;
+
+	aabbMin = aabbCenter - scaledAabbHalfExtends;
+	aabbMax = aabbCenter + scaledAabbHalfExtends;
 
 }
 
 void btUniformScalingShape::getAabbSlow(const btTransform& t,btVector3& aabbMin,btVector3& aabbMax) const
 {
-#if 1
-	btVector3 _directions[] =
-	{
-		btVector3( 1.,  0.,  0.),
-		btVector3( 0.,  1.,  0.),
-		btVector3( 0.,  0.,  1.),
-		btVector3( -1., 0.,  0.),
-		btVector3( 0., -1.,  0.),
-		btVector3( 0.,  0., -1.)
-	};
-	
-	btVector3 _supporting[] =
-	{
-		btVector3( 0., 0., 0.),
-		btVector3( 0., 0., 0.),
-		btVector3( 0., 0., 0.),
-		btVector3( 0., 0., 0.),
-		btVector3( 0., 0., 0.),
-		btVector3( 0., 0., 0.)
-	};
+	m_childConvexShape->getAabbSlow(t,aabbMin,aabbMax);
+	btVector3 aabbCenter = (aabbMax+aabbMin)*btScalar(0.5);
+	btVector3 scaledAabbHalfExtends = (aabbMax-aabbMin)*btScalar(0.5)*m_uniformScalingFactor;
 
-	for (int i=0;i<6;i++)
-	{
-		_directions[i] = _directions[i]*t.getBasis();
-	}
-	
-	batchedUnitVectorGetSupportingVertexWithoutMargin(_directions, _supporting, 6);
-	
-	btVector3 aabbMin1(0,0,0),aabbMax1(0,0,0);
-
-	for ( int i = 0; i < 3; ++i )
-	{
-		aabbMax1[i] = t(_supporting[i])[i];
-		aabbMin1[i] = t(_supporting[i + 3])[i];
-	}
-	btVector3 marginVec(getMargin(),getMargin(),getMargin());
-	aabbMin = aabbMin1-marginVec;
-	aabbMax = aabbMax1+marginVec;
-	
-#else
-
-	btScalar margin = getMargin();
-	for (int i=0;i<3;i++)
-	{
-		btVector3 vec(btScalar(0.),btScalar(0.),btScalar(0.));
-		vec[i] = btScalar(1.);
-		btVector3 sv = localGetSupportingVertex(vec*t.getBasis());
-		btVector3 tmp = t(sv);
-		aabbMax[i] = tmp[i]+margin;
-		vec[i] = btScalar(-1.);
-		sv = localGetSupportingVertex(vec*t.getBasis());
-		tmp = t(sv);
-		aabbMin[i] = tmp[i]-margin;
-	}
-
-#endif
+	aabbMin = aabbCenter - scaledAabbHalfExtends;
+	aabbMax = aabbCenter + scaledAabbHalfExtends;
 }
 
 void	btUniformScalingShape::setLocalScaling(const btVector3& scaling) 

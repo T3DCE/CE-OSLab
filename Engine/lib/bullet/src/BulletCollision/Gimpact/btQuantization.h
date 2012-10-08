@@ -1,8 +1,8 @@
-#ifndef BT_GIMPACT_QUANTIZATION_H_INCLUDED
-#define BT_GIMPACT_QUANTIZATION_H_INCLUDED
+#ifndef BT_QUANTIZATION_H_INCLUDED
+#define BT_QUANTIZATION_H_INCLUDED
 
 /*! \file btQuantization.h
-*\author Francisco Leon Najera
+*\author Francisco Len Nßjera
 
 */
 /*
@@ -85,4 +85,4 @@ SIMD_FORCE_INLINE btVector3 bt_unquantize(
 
 
 
-#endif // BT_GIMPACT_QUANTIZATION_H_INCLUDED
+#endif // GIM_VECTOR_H_INCLUDED

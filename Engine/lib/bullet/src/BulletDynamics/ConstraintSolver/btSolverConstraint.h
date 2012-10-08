@@ -26,7 +26,7 @@ class	btRigidBody;
 
 
 ///1D constraint along a normal axis between bodyA and bodyB. It can be combined to solve contact and friction constraints.
-ATTRIBUTE_ALIGNED64 (struct)	btSolverConstraint
+ATTRIBUTE_ALIGNED16 (struct)	btSolverConstraint
 {
 	BT_DECLARE_ALIGNED_ALLOCATOR();
 
@@ -51,8 +51,6 @@ ATTRIBUTE_ALIGNED64 (struct)	btSolverConstraint
 		btScalar	m_unusedPadding0;
 	};
 
-	int	m_overrideNumSolverIterations;
-
 	union
 	{
 		int			m_frictionIndex;
@@ -60,13 +58,13 @@ ATTRIBUTE_ALIGNED64 (struct)	btSolverConstraint
 	};
 	union
 	{
-		btRigidBody*	m_solverBodyA;
-		int				m_companionIdA;
+		int			m_solverBodyIdA;
+		btScalar	m_unusedPadding2;
 	};
 	union
 	{
-		btRigidBody*	m_solverBodyB;
-		int				m_companionIdB;
+		int			m_solverBodyIdB;
+		btScalar	m_unusedPadding3;
 	};
 	
 	union

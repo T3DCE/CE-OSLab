@@ -16,11 +16,11 @@ subject to the following restrictions:
 
 ///includes modifications/improvements by John Ratcliff, see BringOutYourDead below.
 
-#ifndef BT_CD_HULL_H
-#define BT_CD_HULL_H
+#ifndef CD_HULL_H
+#define CD_HULL_H
 
-#include "btVector3.h"
-#include "btAlignedObjectArray.h"
+#include "LinearMath/btVector3.h"
+#include "LinearMath/btAlignedObjectArray.h"
 
 typedef btAlignedObjectArray<unsigned int> TUIntArray;
 
@@ -237,5 +237,5 @@ private:
 };
 
 
-#endif //BT_CD_HULL_H
+#endif
 

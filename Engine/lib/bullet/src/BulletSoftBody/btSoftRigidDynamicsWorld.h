@@ -21,8 +21,6 @@ subject to the following restrictions:
 
 typedef	btAlignedObjectArray<btSoftBody*> btSoftBodyArray;
 
-class btSoftBodySolver;
-
 class btSoftRigidDynamicsWorld : public btDiscreteDynamicsWorld
 {
 
@@ -32,9 +30,6 @@ class btSoftRigidDynamicsWorld : public btDiscreteDynamicsWorld
 	bool			m_drawFaceTree;
 	bool			m_drawClusterTree;
 	btSoftBodyWorldInfo m_sbi;
-	///Solver classes that encapsulate multiple soft bodies for solving
-	btSoftBodySolver *m_softBodySolver;
-	bool			m_ownsSolver;
 
 protected:
 
@@ -42,13 +37,14 @@ protected:
 
 	virtual void	internalSingleStepSimulation( btScalar timeStep);
 
-	void	solveSoftBodiesConstraints( btScalar timeStep );
+	void	updateSoftBodies();
 
-	void	serializeSoftBodies(btSerializer* serializer);
+	void	solveSoftBodiesConstraints();
+
 
 public:
 
-	btSoftRigidDynamicsWorld(btDispatcher* dispatcher,btBroadphaseInterface* pairCache,btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration, btSoftBodySolver *softBodySolver = 0 );
+	btSoftRigidDynamicsWorld(btDispatcher* dispatcher,btBroadphaseInterface* pairCache,btConstraintSolver* constraintSolver,btCollisionConfiguration* collisionConfiguration);
 
 	virtual ~btSoftRigidDynamicsWorld();
 
@@ -73,10 +69,6 @@ public:
 		return m_sbi;
 	}
 
-	virtual btDynamicsWorldType	getWorldType() const
-	{
-		return	BT_SOFT_RIGID_DYNAMICS_WORLD;
-	}
 
 	btSoftBodyArray& getSoftBodyArray()
 	{
@@ -87,20 +79,6 @@ public:
 	{
 		return m_softBodies;
 	}
-
-
-	virtual void rayTest(const btVector3& rayFromWorld, const btVector3& rayToWorld, RayResultCallback& resultCallback) const; 
-
-	/// rayTestSingle performs a raycast call and calls the resultCallback. It is used internally by rayTest.
-	/// In a future implementation, we consider moving the ray test as a virtual method in btCollisionShape.
-	/// This allows more customization.
-	static void	rayTestSingle(const btTransform& rayFromTrans,const btTransform& rayToTrans,
-					  btCollisionObject* collisionObject,
-					  const btCollisionShape* collisionShape,
-					  const btTransform& colObjWorldTransform,
-					  RayResultCallback& resultCallback);
-
-	virtual	void	serialize(btSerializer* serializer);
 
 };
 

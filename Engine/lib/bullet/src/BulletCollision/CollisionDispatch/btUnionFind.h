@@ -13,15 +13,12 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef BT_UNION_FIND_H
-#define BT_UNION_FIND_H
+#ifndef UNION_FIND_H
+#define UNION_FIND_H
 
 #include "LinearMath/btAlignedObjectArray.h"
 
-#define USE_PATH_COMPRESSION 1
-
-///see for discussion of static island optimizations by Vroonsh here: http://code.google.com/p/bullet/issues/detail?id=406
-#define STATIC_SIMULATION_ISLAND_OPTIMIZATION 1
+	#define USE_PATH_COMPRESSION 1
 
 struct	btElement
 {
@@ -109,12 +106,10 @@ class btUnionFind
 		//not really a reason not to use path compression, and it flattens the trees/improves find performance dramatically
 	
 		#ifdef USE_PATH_COMPRESSION
-				const btElement* elementPtr = &m_elements[m_elements[x].m_id];
-				m_elements[x].m_id = elementPtr->m_id;
-				x = elementPtr->m_id;			
-		#else//
+				//
+				m_elements[x].m_id = m_elements[m_elements[x].m_id].m_id;
+		#endif //
 				x = m_elements[x].m_id;
-		#endif		
 				//btAssert(x < m_N);
 				//btAssert(x >= 0);
 
@@ -126,4 +121,4 @@ class btUnionFind
   };
 
 
-#endif //BT_UNION_FIND_H
+#endif //UNION_FIND_H

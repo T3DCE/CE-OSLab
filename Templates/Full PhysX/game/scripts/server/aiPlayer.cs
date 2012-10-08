@@ -87,7 +87,7 @@ function DemoPlayer::onEndSequence(%this,%obj,%slot)
 // AIPlayer static functions
 //-----------------------------------------------------------------------------
 
-function AIPlayer::spawnAtLocation(%name, %spawnPoint)
+function AIPlayer::spawn(%name,%spawnPoint)
 {
    // Create the demo player object
    %player = new AiPlayer()
@@ -101,13 +101,13 @@ function AIPlayer::spawnAtLocation(%name, %spawnPoint)
    return %player;
 }
 
-function AIPlayer::spawnOnPath(%name, %path)
+function AIPlayer::spawnOnPath(%name,%path)
 {
    // Spawn a player and place him on the first node of the path
    if (!isObject(%path))
       return 0;
    %node = %path.getObject(0);
-   %player = AIPlayer::spawnAtLocation(%name, %node.getTransform());
+   %player = AIPlayer::spawn(%name, %node.getTransform());
    return %player;
 }
 
@@ -118,6 +118,7 @@ function AIPlayer::spawnOnPath(%name, %path)
 function AIPlayer::followPath(%this,%path,%node)
 {
    // Start the player following a path
+   %this.stopThread(0);
    if (!isObject(%path))
    {
       %this.path = "";
@@ -159,7 +160,7 @@ function AIPlayer::moveToNode(%this,%index)
    // Move to the given path node index
    %this.currentNode = %index;
    %node = %this.path.getObject(%index);
-   %this.setMoveDestination(%node.getTransform());
+   %this.setMoveDestination(%node.getTransform(), %index == %this.targetNode);
 }
 
 //-----------------------------------------------------------------------------
@@ -297,26 +298,28 @@ function AIPlayer::getNearestPlayerTarget(%this)
 
 //-----------------------------------------------------------------------------
 
-function AIPlayer::think(%player)
+function AIManager::think(%this)
 {
-   // Thinking allows us to consider other things...
-   %player.schedule(500, think);
+   // We could hook into the player's onDestroyed state instead of having to
+   // "think", but thinking allows us to consider other things...
+   if (!isObject(%this.player))
+      %this.player = %this.spawn();
+   %this.schedule(500, think);
 }
 
-function AIPlayer::spawn(%path)
+function AIManager::spawn(%this)
 {
-   %player = AIPlayer::spawnOnPath("Shootme", %path);
+   %player = AIPlayer::spawnOnPath("Shootme", "MissionGroup/Paths/Path1");
 
    if (isObject(%player))
    {
-      %player.followPath(%path, -1);
+      %player.followPath("MissionGroup/Paths/Path1", -1);
 
       // slow this sucker down, I'm tired of chasing him!
       %player.setMoveSpeed(0.5);
 
       //%player.mountImage(xxxImage, 0);
       //%player.setInventory(xxxAmmo, 1000);
-      //%player.think();
 
       return %player;
    }

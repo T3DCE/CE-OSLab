@@ -56,9 +56,6 @@ function initializePhysicsTools()
       superClass = "EditorPlugin";
       editorGui = EWorldEditor;
    };
-   
-   exec("./BulletSettings.gui");
-   exec("./BulletSettings.gui.cs");
 }
 
 function destroyPhysicsTools()
@@ -82,8 +79,6 @@ function PhysicsEditorPlugin::onWorldEditorStartup( %this )
       item[4] = "Speed 100%" TAB "" TAB "physicsSetTimeScale( 1.0 );";
       item[5] = "-";
       item[6] = "Reload NXBs" TAB "" TAB "";
-      item[7] = "-";
-      item[8] = "Bullet Settings" TAB "" TAB "canvas.pushdialog(BulletSettings);";
    };
       
    // Add our menu.

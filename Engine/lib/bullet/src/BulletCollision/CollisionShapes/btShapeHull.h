@@ -15,8 +15,8 @@ subject to the following restrictions:
 
 ///btShapeHull implemented by John McCutchan.
 
-#ifndef BT_SHAPE_HULL_H
-#define BT_SHAPE_HULL_H
+#ifndef _SHAPE_HULL_H
+#define _SHAPE_HULL_H
 
 #include "LinearMath/btAlignedObjectArray.h"
 #include "BulletCollision/CollisionShapes/btConvexShape.h"
@@ -27,15 +27,6 @@ subject to the following restrictions:
 ///It approximates the convex hull using the supporting vertex of 42 directions.
 class btShapeHull
 {
-protected:
-
-	btAlignedObjectArray<btVector3> m_vertices;
-	btAlignedObjectArray<unsigned int> m_indices;
-	unsigned int m_numIndices;
-	const btConvexShape* m_shape;
-
-	static btVector3* getUnitSpherePoints();
-
 public:
 	btShapeHull (const btConvexShape* shape);
 	~btShapeHull ();
@@ -54,6 +45,12 @@ public:
 	{
 		return &m_indices[0];
 	}
+
+protected:
+	btAlignedObjectArray<btVector3> m_vertices;
+	btAlignedObjectArray<unsigned int> m_indices;
+	unsigned int m_numIndices;
+	const btConvexShape* m_shape;
 };
 
-#endif //BT_SHAPE_HULL_H
+#endif //_SHAPE_HULL_H

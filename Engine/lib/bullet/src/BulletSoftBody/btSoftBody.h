@@ -27,17 +27,8 @@ subject to the following restrictions:
 #include "btSparseSDF.h"
 #include "BulletCollision/BroadphaseCollision/btDbvt.h"
 
-//#ifdef BT_USE_DOUBLE_PRECISION
-//#define btRigidBodyData	btRigidBodyDoubleData
-//#define btRigidBodyDataName	"btRigidBodyDoubleData"
-//#else
-#define btSoftBodyData	btSoftBodyFloatData
-#define btSoftBodyDataName	"btSoftBodyFloatData"
-//#endif //BT_USE_DOUBLE_PRECISION
-
 class btBroadphaseInterface;
 class btDispatcher;
-class btSoftBodySolver;
 
 /* btSoftBodyWorldInfo	*/ 
 struct	btSoftBodyWorldInfo
@@ -50,17 +41,6 @@ struct	btSoftBodyWorldInfo
 	btDispatcher*	m_dispatcher;
 	btVector3				m_gravity;
 	btSparseSdf<3>			m_sparsesdf;
-
-	btSoftBodyWorldInfo()
-		:air_density((btScalar)1.2),
-		water_density(0),
-		water_offset(0),
-		water_normal(0,0,0),
-		m_broadphase(0),
-		m_dispatcher(0),
-		m_gravity(0,-10,0)
-	{
-	}
 };	
 
 
@@ -71,22 +51,17 @@ class	btSoftBody : public btCollisionObject
 public:
 	btAlignedObjectArray<class btCollisionObject*> m_collisionDisabledObjects;
 
-	// The solver object that handles this soft body
-	btSoftBodySolver *m_softBodySolver;
-
 	//
 	// Enumerations
 	//
 
 	///eAeroModel 
 	struct eAeroModel { enum _ {
-		V_Point,			///Vertex normals are oriented toward velocity
-		V_TwoSided,			///Vertex normals are flipped to match velocity	
-		V_TwoSidedLiftDrag, ///Vertex normals are flipped to match velocity and lift and drag forces are applied
-		V_OneSided,			///Vertex normals are taken as it is	
-		F_TwoSided,			///Face normals are flipped to match velocity
-		F_TwoSidedLiftDrag,	///Face normals are flipped to match velocity and lift and drag forces are applied 
-		F_OneSided,			///Face normals are taken as it is		
+		V_Point,	///Vertex normals are oriented toward velocity
+		V_TwoSided,	///Vertex normals are fliped to match velocity	
+		V_OneSided,	///Vertex normals are taken as it is	
+		F_TwoSided,	///Face normals are fliped to match velocity
+		F_OneSided,	///Face normals are taken as it is
 		END
 	};};
 
@@ -119,7 +94,6 @@ public:
 		Node,
 		Link,
 		Face,
-		Tetra,
 		END
 	};};
 
@@ -285,7 +259,6 @@ public:
 		Node*					m_node;			// Node pointer
 		btVector3				m_local;		// Anchor position in body space
 		btRigidBody*			m_body;			// Body
-		btScalar				m_influence;
 		btMatrix3x3				m_c0;			// Impulse matrix
 		btVector3				m_c1;			// Relative anchor
 		btScalar				m_c2;			// ima*dt
@@ -314,9 +287,9 @@ public:
 	};
 	/* Cluster		*/ 
 	struct	Cluster
-	{
-		tScalarArray				m_masses;
+	{		
 		btAlignedObjectArray<Node*>	m_nodes;		
+		tScalarArray				m_masses;
 		tVector3Array				m_framerefs;
 		btTransform					m_framexform;
 		btScalar					m_idmass;
@@ -385,11 +358,7 @@ public:
 
 		void						activate() const
 		{
-			if(m_rigid) 
-				m_rigid->activate();
-			if (m_collisionObject)
-				m_collisionObject->activate();
-
+			if(m_rigid) m_rigid->activate();
 		}
 		const btMatrix3x3&			invWorldInertia() const
 		{
@@ -407,7 +376,7 @@ public:
 		const btTransform&			xform() const
 		{
 			static const btTransform	identity=btTransform::getIdentity();		
-			if(m_collisionObject) return(m_collisionObject->getWorldTransform());
+			if(m_collisionObject) return(m_collisionObject->getInterpolationWorldTransform());
 			if(m_soft)	return(m_soft->m_framexform);
 			return(identity);
 		}
@@ -481,7 +450,7 @@ public:
 	struct	Joint
 	{
 		struct eType { enum _ {
-			Linear=0,
+			Linear,
 			Angular,
 			Contact
 		};};
@@ -620,7 +589,7 @@ public:
 	};
 
 	//
-	// Typedefs
+	// Typedef's
 	//
 
 	typedef void								(*psolver_t)(btSoftBody*,btScalar,btScalar);
@@ -670,19 +639,14 @@ public:
 
 	btTransform			m_initialWorldTransform;
 
-	btVector3			m_windVelocity;
 	//
 	// Api
 	//
 
 	/* ctor																	*/ 
-	btSoftBody(	btSoftBodyWorldInfo* worldInfo,int node_count,		const btVector3* x,		const btScalar* m);
-
-	/* ctor																	*/ 
-	btSoftBody(	btSoftBodyWorldInfo* worldInfo);
-
-	void	initDefaults();
-
+	btSoftBody(	btSoftBodyWorldInfo* worldInfo,int node_count,
+		const btVector3* x,
+		const btScalar* m);
 	/* dtor																	*/ 
 	virtual ~btSoftBody();
 	/* Check for existing link												*/ 
@@ -756,8 +720,7 @@ public:
 
 	/* Append anchor														*/ 
 	void				appendAnchor(	int node,
-		btRigidBody* body, bool disableCollisionBetweenLinkedBodies=false,btScalar influence = 1);
-	void			appendAnchor(int node,btRigidBody* body, const btVector3& localPivot,bool disableCollisionBetweenLinkedBodies=false,btScalar influence = 1);
+		btRigidBody* body, bool disableCollisionBetweenLinkedBodies=false);
 	/* Append linear joint													*/ 
 	void				appendLinearJoint(const LJoint::Specs& specs,Cluster* body0,Body body1);
 	void				appendLinearJoint(const LJoint::Specs& specs,Body body=Body());
@@ -771,12 +734,6 @@ public:
 	/* Add force (or gravity) to a node of the body							*/ 
 	void				addForce(		const btVector3& force,
 		int node);
-	/* Add aero force to a node of the body */
-	void			    addAeroForceToNode(const btVector3& windVelocity,int nodeIndex);
-
-	/* Add aero force to a face of the body */
-	void			    addAeroForceToFace(const btVector3& windVelocity,int faceIndex);
-
 	/* Add velocity to the entire body										*/ 
 	void				addVelocity(	const btVector3& velocity);
 
@@ -870,49 +827,6 @@ public:
 	void				defaultCollisionHandler(btCollisionObject* pco);
 	void				defaultCollisionHandler(btSoftBody* psb);
 
-
-
-	//
-	// Functionality to deal with new accelerated solvers.
-	//
-
-	/**
-	 * Set a wind velocity for interaction with the air.
-	 */
-	void setWindVelocity( const btVector3 &velocity );
-
-
-	/**
-	 * Return the wind velocity for interaction with the air.
-	 */
-	const btVector3& getWindVelocity();
-
-	//
-	// Set the solver that handles this soft body
-	// Should not be allowed to get out of sync with reality
-	// Currently called internally on addition to the world
-	void setSoftBodySolver( btSoftBodySolver *softBodySolver )
-	{
-		m_softBodySolver = softBodySolver;
-	}
-
-	//
-	// Return the solver that handles this soft body
-	// 
-	btSoftBodySolver *getSoftBodySolver()
-	{
-		return m_softBodySolver;
-	}
-
-	//
-	// Return the solver that handles this soft body
-	// 
-	btSoftBodySolver *getSoftBodySolver() const
-	{
-		return m_softBodySolver;
-	}
-
-
 	//
 	// Cast
 	//
@@ -970,17 +884,7 @@ public:
 	static psolver_t	getSolver(ePSolver::_ solver);
 	static vsolver_t	getSolver(eVSolver::_ solver);
 
-
-	virtual	int	calculateSerializeBufferSize()	const;
-
-	///fills the dataBuffer and returns the struct name (and 0 on failure)
-	virtual	const char*	serialize(void* dataBuffer,  class btSerializer* serializer) const;
-
-	//virtual void serializeSingleObject(class btSerializer* serializer) const;
-
-
 };
-
 
 
 

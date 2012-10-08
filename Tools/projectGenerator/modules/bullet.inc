@@ -21,24 +21,61 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-beginModule( 'bullet' );
-	           
-   addProjectDefine( "TORQUE_PHYSICS_BULLET" );
-   addProjectDefine( "TORQUE_PHYSICS_ENABLED" );
+beginLibConfig( 'libbullet', '{4368B65C-F5EF-4D28-B533-B02A04EBE921}' );
+      
+   // Additional includes
+   addLibIncludePath( 'bullet/src' );
 
-   addEngineSrcDir( "T3D/physics/bullet" );
+   // Source
+   addLibSrcDir( 'bullet/src' );
 
-   includeLib( 'libbullet' );
-   addLibIncludePath( "bullet/src" );
+   addLibSrcDir( 'bullet/src/LinearMath' );
 
-   if (inProjectConfig())
-   {
-      addProjectDependency( 'libbullet' );
+   //addLibSrcDir( 'bullet/src/CL' );
+   addLibSrcDir( 'bullet/src/MiniCL' );
+   addLibSrcDir( 'bullet/src/MiniCL/MiniCLTask' );
 
-      if (Generator::$platform != "win32")
-         addSolutionProjectRef( 'libbullet' );
-   }
+   // Collision
+   addLibSrcDir( 'bullet/src/BulletCollision' );
+   addLibSrcDir( 'bullet/src/BulletCollision/BroadphaseCollision' );
+   addLibSrcDir( 'bullet/src/BulletCollision/CollisionDispatch' );
+   addLibSrcDir( 'bullet/src/BulletCollision/CollisionShapes' );
+   addLibSrcDir( 'bullet/src/BulletCollision/Gimpact' );
+   addLibSrcDir( 'bullet/src/BulletCollision/NarrowPhaseCollision' );
+
+   //
+   addLibSrcDir( 'bullet/src/BulletDynamics' );
+   addLibSrcDir( 'bullet/src/BulletDynamics/Character' );
+   addLibSrcDir( 'bullet/src/BulletDynamics/ConstraintSolver' );
+   addLibSrcDir( 'bullet/src/BulletDynamics/Dynamics' );
+   addLibSrcDir( 'bullet/src/BulletDynamics/Vehicle' );
    
-endModule();
+
+   //
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded' );
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded/GpuSoftBodySolvers/Shared' );
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL' );
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/MiniCL' );
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded/GpuSoftBodySolvers/OpenCL/OpenCLC10' );
+   addLibSrcDir( 'bullet/src/BulletMultiThreaded/SpuNarrowPhaseCollisionTask' );
+
+
+   
+   // TODO: Can we do multicore on OSX?
+   if (  Generator::$platform == "win32" || Generator::$platform == "360" )
+   {
+      addProjectDefine( '_WIN32' );
+      addProjectDefine( '_WINDOWS' );
+      //addProjectDefine( 'BT_USE_SSE' );
+
+      addLibIncludePath( 'bullet/src/vectormath' );
+      addLibIncludePath( 'bullet/src/vectormath/sse' );
+   }
+
+   //
+   addLibSrcDir( 'bullet/src/BulletSoftBody' );
+
+   
+endLibConfig();
 
 ?>

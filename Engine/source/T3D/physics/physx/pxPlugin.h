@@ -41,6 +41,11 @@ public:
    // PhysicsPlugin
    virtual void destroyPlugin();
    virtual void reset();
+
+   // Torque Physics Constraints Resource
+   // http://www.garagegames.com/community/resources/view/21705
+   virtual PhysicsConstraint* createConstraint();
+
    virtual PhysicsCollision* createCollision();
    virtual PhysicsBody* createBody();
    virtual PhysicsPlayer* createPlayer();

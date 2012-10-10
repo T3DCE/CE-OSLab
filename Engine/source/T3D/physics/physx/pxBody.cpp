@@ -402,3 +402,27 @@ void PxBody::applyImpulse( const Point3F &origin, const Point3F &force )
                               NX_IMPULSE );
 }
 
+// ----------------------------------------------------------------------------
+// CCD
+// ----------------------------------------------------------------------------
+
+void PxBody::setCCD( F32 &ccdMotionThreshold, F32 &ccdSweptSphereRadius)
+{
+}
+
+F32 PxBody::getccdMotionThreshold() const
+{
+	AssertFatal( mActor, "PxBody::getccdMotionThreshold - The actor is null!" );
+	AssertFatal( isDynamic(), "PxBody::getccdMotionThreshold - This call is only for dynamics!" );
+
+	return 0.0f;
+}
+
+F32 PxBody::getccdSweptSphereRadius() const
+{
+	AssertFatal( mActor, "PxBody::getccdSweptSphereRadius - The actor is null!" );
+	AssertFatal( isDynamic(), "PxBody::getccdSweptSphereRadius - This call is only for dynamics!" );
+
+	return 0.0f;
+}
+

@@ -66,7 +66,8 @@ void PxCollision::addPlane( const PlaneF &plane )
    desc->skinWidth = 0.01f;
    desc->dimensions.set( 10000.0f, 10000.0f, 100.0f );
    desc->localPose.t.z = -100.0f;
-   
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
+
    // TODO: Fix rotation to match plane normal!
    //boxDesc->localPose.M.setColumn( 0, NxVec3( plane.x, plane.y, plane.z ) );
    //boxDesc->localPose.M.setColumn( 1, NxVec3( plane.x, plane.y, plane.z ) );
@@ -82,6 +83,7 @@ void PxCollision::addBox(  const Point3F &halfWidth,
    desc->skinWidth = 0.01f;
    desc->dimensions.set( halfWidth.x, halfWidth.y, halfWidth.z );
    desc->localPose.setRowMajor44( localXfm );
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
    mColShapes.push_back( desc );
 }
 
@@ -92,6 +94,7 @@ void PxCollision::addSphere(  F32 radius,
    desc->skinWidth = 0.01f;
    desc->radius = radius;
    desc->localPose.setRowMajor44( localXfm );
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
    mColShapes.push_back( desc );
 }
 
@@ -104,6 +107,7 @@ void PxCollision::addCapsule( F32 radius,
    desc->radius = radius;
    desc->height = height;
    desc->localPose.setRowMajor44( localXfm );
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
    mColShapes.push_back( desc );
 }
 
@@ -151,6 +155,7 @@ bool PxCollision::addConvex(  const Point3F *points,
    desc->skinWidth = 0.01f;
    desc->meshData = meshData;
    desc->localPose.setRowMajor44( localXfm );
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
    mColShapes.push_back( desc );
 
    return true;
@@ -204,6 +209,7 @@ bool PxCollision::addTriangleMesh(  const Point3F *vert,
    desc->skinWidth = 0.01f;
    desc->meshData = meshData;
    desc->localPose.setRowMajor44( localXfm );
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
    mColShapes.push_back( desc );
 
    return true;
@@ -274,6 +280,7 @@ bool PxCollision::addHeightfield(   const U16 *heights,
    desc->columnScale = metersPerSample;  
    desc->materialIndexHighBits = 0;   
    desc->skinWidth = 0.01f;
+   desc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
 
    // Use the local pose to align the heightfield
    // to what Torque will expect.

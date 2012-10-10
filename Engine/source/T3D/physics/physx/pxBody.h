@@ -109,6 +109,11 @@ public:
                               F32 staticFriction );
    virtual void applyCorrection( const MatrixF &xfm );
    virtual void applyImpulse( const Point3F &origin, const Point3F &force );
+
+   /// CCD
+   virtual void setCCD(F32 &ccdMotionThreshold, F32 &ccdSweptSphereRadius);
+   virtual F32 getccdMotionThreshold() const;
+   virtual F32 getccdSweptSphereRadius() const;
 };
 
 #endif // _T3D_PHYSICS_PXBODY_H_

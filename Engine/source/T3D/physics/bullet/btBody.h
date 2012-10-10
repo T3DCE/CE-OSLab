@@ -37,7 +37,9 @@ class BtWorld;
 class btRigidBody;
 class btCompoundShape;
 class BtCollision;
-
+#ifdef BULLET_MOTIONSTATES
+class BtMotionState;
+#endif
 
 class BtBody : public PhysicsBody
 {
@@ -50,6 +52,10 @@ protected:
 
    /// The physics actor.
    btRigidBody *mActor;
+
+#ifdef BULLET_MOTIONSTATES
+   BtMotionState *mMotionState;
+#endif
 
    /// The collision representation.
    StrongRefPtr<BtCollision> mColShape;
@@ -73,6 +79,10 @@ protected:
 
    /// The inverse center of mass offset.
    MatrixF *mInvCenterOfMass;
+
+   ///
+   F32 ccdMotionThreshold;
+   F32 ccdSweptSphereRadius;
 
    ///
    void _releaseActor();
@@ -113,6 +123,11 @@ public:
                               F32 staticFriction );
    virtual void applyCorrection( const MatrixF &xfm );
    virtual void applyImpulse( const Point3F &origin, const Point3F &force );
+
+   // CCD
+	virtual void setCCD(F32 &ccdMotionThreshold, F32 &ccdSweptSphereRadius);
+	virtual F32 getccdMotionThreshold() const;
+	virtual F32 getccdSweptSphereRadius() const;
 };
 
 #endif // _T3D_PHYSICS_BTBODY_H_

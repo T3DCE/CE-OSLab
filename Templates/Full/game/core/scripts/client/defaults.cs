@@ -218,6 +218,11 @@ $pref::windEffectRadius = 25;
 /// AutoDetect graphics quality levels the next startup.
 $pref::Video::autoDetect = 1;
 
+// Bullet
+$Pref::Bullet::Method = 0;
+$Pref::Bullet::maxSubSteps = 2;
+$Pref::Bullet::fixedTimeStep = 0.017;
+
 //-----------------------------------------------------------------------------
 // Graphics Quality Groups
 //-----------------------------------------------------------------------------

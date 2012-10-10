@@ -110,6 +110,10 @@ bool PxWorld::_init( bool isServer, ProcessList *processList )
    sceneDesc.flags |= NX_SF_ENABLE_MULTITHREAD | NX_SF_DISABLE_SCENE_MUTEX;
    sceneDesc.threadMask = 0xfffffffe;
    sceneDesc.internalThreadCount = PHYSICSMGR->getThreadCount();
+   sceneDesc.upAxis = 2;
+
+   gPhysicsSDK->setParameter(NX_CONTINUOUS_CD, true);
+   gPhysicsSDK->setParameter(NX_CCD_EPSILON, 0.01);
 
    // Create the scene.
    mScene = gPhysicsSDK->createScene(sceneDesc);

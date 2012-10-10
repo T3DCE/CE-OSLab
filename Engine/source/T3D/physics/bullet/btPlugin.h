@@ -27,6 +27,10 @@
 #include "T3D/physics/physicsPlugin.h"
 #endif
 
+#ifndef _PHYSICS_BT_CONSTRAINT_H_
+#include "btConstraint.h"
+#endif
+
 
 class BtPlugin : public PhysicsPlugin
 {
@@ -41,6 +45,7 @@ public:
    // PhysicsPlugin
    virtual void destroyPlugin();
    virtual void reset();
+   virtual PhysicsConstraint* createConstraint();
    virtual PhysicsCollision* createCollision();
    virtual PhysicsBody* createBody();
    virtual PhysicsPlayer* createPlayer();

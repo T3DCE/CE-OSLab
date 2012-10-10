@@ -49,12 +49,19 @@ protected:
 
    F32 mEditorTimeScale;
 
+#ifndef BULLET_INFINITE_WORLD
    btDynamicsWorld *mDynamicsWorld;
    btBroadphaseInterface *mBroadphase;
+#else
+	btDiscreteDynamicsWorld *mDynamicsWorld;
+	btDbvtBroadphase *mBroadphase;
+#endif
    btCollisionDispatcher *mDispatcher;
    btConstraintSolver *mSolver;
+   btParallelConstraintSolver *mParallelSolver;
    btDefaultCollisionConfiguration *mCollisionConfiguration;
   	btThreadSupportInterface *mThreadSupportCollision;
+   btThreadSupportInterface *mThreadSupportSolver;
 
    bool mErrorReport;
 

@@ -98,6 +98,14 @@ void PxPlugin::reset()
       iter->value->reset();
 }
 
+// Torque Physics Constraints Resource
+// http://www.garagegames.com/community/resources/view/21705
+PhysicsConstraint* PxPlugin::createConstraint()  
+{  
+	//Currently no support for constraints in physX
+	return NULL;
+} 
+
 PhysicsCollision* PxPlugin::createCollision()
 {
    return new PxCollision();

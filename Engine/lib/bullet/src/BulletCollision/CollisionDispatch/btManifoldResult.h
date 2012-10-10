@@ -14,8 +14,8 @@ subject to the following restrictions:
 */
 
 
-#ifndef MANIFOLD_RESULT_H
-#define MANIFOLD_RESULT_H
+#ifndef BT_MANIFOLD_RESULT_H
+#define BT_MANIFOLD_RESULT_H
 
 class btCollisionObject;
 #include "BulletCollision/NarrowPhaseCollision/btPersistentManifold.h"
@@ -34,6 +34,8 @@ extern ContactAddedCallback		gContactAddedCallback;
 ///btManifoldResult is a helper class to manage  contact results.
 class btManifoldResult : public btDiscreteCollisionDetectorInterface::Result
 {
+protected:
+
 	btPersistentManifold* m_manifoldPtr;
 
 	//we need this for compounds
@@ -123,4 +125,4 @@ public:
 	
 };
 
-#endif //MANIFOLD_RESULT_H
+#endif //BT_MANIFOLD_RESULT_H

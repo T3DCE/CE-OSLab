@@ -83,6 +83,11 @@ void BtPlugin::reset()
       iter->value->reset();
 }
 
+PhysicsConstraint* BtPlugin::createConstraint()  
+{  
+	return new BtConstraint();  
+} 
+
 PhysicsCollision* BtPlugin::createCollision()
 {
    return new BtCollision();

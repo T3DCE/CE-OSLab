@@ -41,6 +41,8 @@ class BtCollision;
 
 class BtBody : public PhysicsBody
 {
+	friend class BtConstraint;
+
 protected:
 
    /// The physics world we are in.

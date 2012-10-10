@@ -42,6 +42,9 @@
 #include "T3D/physics/physicsCommon.h"
 #endif
 
+#ifndef _PHYSICS_CONSTRAINT_H_
+#include "PhysicsConstraint.h" 
+#endif
 
 class Player;
 class SceneRenderState;
@@ -111,6 +114,8 @@ public:
    SimSet* getPhysicsCleanup() const { return mPhysicsCleanup; }      
 
    void enableDebugDraw( bool enabled );
+
+   virtual PhysicsConstraint* createConstraint() = 0;
 
    virtual PhysicsCollision* createCollision() = 0;
 

@@ -119,10 +119,11 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
 
    if ( smMaxThreads > 1 )
 	{
-		mThreadSupportSolver = createSolverThreadSupport(smMaxThreads);
-		mSolver = new btParallelConstraintSolver(mThreadSupportSolver);
+		//mThreadSupportSolver = createSolverThreadSupport(smMaxThreads);
+		//mSolver = new btParallelConstraintSolver(mThreadSupportSolver);
 		//this solver requires the contacts to be in a contiguous pool, so avoid dynamic allocation
-		mDispatcher->setDispatcherFlags(btCollisionDispatcher::CD_DISABLE_CONTACTPOOL_DYNAMIC_ALLOCATION);
+		//mDispatcher->setDispatcherFlags(btCollisionDispatcher::CD_DISABLE_CONTACTPOOL_DYNAMIC_ALLOCATION);
+      mSolver = new btSequentialImpulseConstraintSolver;
 	} 
    else 
    {
@@ -142,6 +143,14 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
    //mDynamicsWorld->getSolverInfo().m_numIterations = 4;
    mDynamicsWorld->getSolverInfo().m_solverMode &= ~SOLVER_RANDMIZE_ORDER;
    if ( smMaxThreads > 1 )
+   {
+		mDynamicsWorld->getDispatchInfo().m_enableSPU = true;
+		mDynamicsWorld->getSolverInfo().m_solverMode = SOLVER_SIMD+SOLVER_USE_WARMSTARTING;//+SOLVER_RANDMIZE_ORDER;
+	} 
+   else
+   {
+		mDynamicsWorld->getSolverInfo().m_solverMode &= ~SOLVER_RANDMIZE_ORDER;
+	}
 		mDynamicsWorld->getDispatchInfo().m_enableSPU = true;
    mDynamicsWorld->setGravity( btCast<btVector3>( mGravity ) );
 
@@ -323,6 +332,8 @@ void BtWorld::explosion( const Point3F &pos, F32 radius, F32 forceMagnitude )
 void BtWorld::onDebugDraw( const SceneRenderState *state )
 {
    mDebugDraw.setCuller( &state->getFrustum() );
+
+   mDebugDraw.setDebugMode(btIDebugDraw::DBG_DrawConstraints | btIDebugDraw::DBG_DrawConstraintLimits);
 
    mDynamicsWorld->setDebugDrawer( &mDebugDraw );
    mDynamicsWorld->debugDrawWorld();

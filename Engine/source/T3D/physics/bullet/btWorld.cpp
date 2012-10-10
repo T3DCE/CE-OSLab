@@ -99,7 +99,9 @@ bool BtWorld::initWorld( bool isServer, ProcessList *processList )
 								                                    processCollisionTask,
 								                                    createCollisionLocalStoreMemory,
 								                                    smMaxThreads ) );
-      
+
+      mThreadSupportCollision->startSPU();
+
       mDispatcher = new	SpuGatheringCollisionDispatcher( mThreadSupportCollision,
                                                          smMaxThreads,
                                                          mCollisionConfiguration );

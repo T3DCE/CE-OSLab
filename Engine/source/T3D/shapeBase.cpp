@@ -3374,7 +3374,10 @@ void ShapeBase::unpackUpdate(NetConnection *con, BitStream *stream)
 
                if ( !image.triggerDown && !image.altTriggerDown )
                {
-                  if ( mWeaponCamShake && mWeaponCamShake->isAdded )
+                  // ShakeCamera will continue shaking after you run out of ammo
+                  // http://www.garagegames.com/community/forums/viewthread/127596
+                  //if ( mWeaponCamShake && mWeaponCamShake->isAdded )
+                  if (!image.triggerDown && !image.altTriggerDown || !image.ammo)
                   {
                      gCamFXMgr.removeFX( mWeaponCamShake );
                      mWeaponCamShake->isAdded = false;

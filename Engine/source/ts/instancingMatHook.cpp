@@ -57,8 +57,12 @@ BaseMatInstance* InstancingMaterialHook::getInstancingMat( BaseMatInstance *matI
       FeatureSet features( matInst->getRequestedFeatures() );
       features.addFeature( MFT_UseInstancing ); 
 
+      Material::sAllowTextureTargetAssignment = true;
+
       if ( !instMat->init( features, matInst->getVertexFormat() ) )
          SAFE_DELETE( instMat );
+
+      Material::sAllowTextureTargetAssignment = true;
 
       hook->mMatInst = instMat;
    }

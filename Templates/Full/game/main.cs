@@ -40,10 +40,6 @@ function createCanvas(%windowTitle)
    // Create the Canvas
    %foo = new GuiCanvas(Canvas);
    
-   // Set the window title
-   if (isObject(Canvas))
-      Canvas.setWindowTitle(getEngineName() @ " - " @ $appName);
-   
    return true;
 }
 

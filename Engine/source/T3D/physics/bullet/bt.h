@@ -41,6 +41,6 @@
 #include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
 #include <BulletMultiThreaded/Win32ThreadSupport.h>
 #include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
-#include "BulletMultiThreaded/btParallelConstraintSolver.h"
+#include <BulletMultiThreaded/btParallelConstraintSolver.h>
 
 #endif // _BULLET_H_

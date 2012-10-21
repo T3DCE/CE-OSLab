@@ -357,10 +357,17 @@ void BtBody::applyImpulse( const Point3F &origin, const Point3F &force )
       mCenterOfMass->mulP( relOrigin );
       Point3F relForce( force );
       mCenterOfMass->mulV( relForce );
-      mActor->applyImpulse( btCast<btVector3>( relForce ), btCast<btVector3>( relOrigin ) );
+
+		btVector3 rhRelForce = btCast<btVector3>( Point3F(relForce.x, relForce.z, relForce.y) );
+		btVector3 rhRelOrigin = btCast<btVector3>( Point3F(relOrigin.x, relOrigin.z, relOrigin.y) );
+      mActor->applyImpulse( rhRelForce, rhRelOrigin );
    }
    else
-      mActor->applyImpulse( btCast<btVector3>( force ), btCast<btVector3>( origin ) );
+	{
+		btVector3 rhForce = btCast<btVector3>( Point3F(force.x, force.z, force.y) );
+		btVector3 rhOrigin =  btCast<btVector3>( Point3F(origin.x, origin.z, origin.y) );
+      mActor->applyImpulse(rhForce, rhOrigin );
+	}
 
    if ( !mActor->isActive() )
       mActor->activate();

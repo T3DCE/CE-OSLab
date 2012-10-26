@@ -1862,6 +1862,21 @@ function EditorTree::GetTooltipParticleEmitterNode( %this, %obj )
    return %text;
 }
 
+// Tooltip for GraphEmitterNode
+function EditorTree::GetTooltipGraphEmitterNode( %this, %obj )
+{
+   %text = "Datablock: " @ %obj.dataBlock;
+   %text = %text NL "Emitter: " @ %obj.emitter;
+   return %text;
+}
+
+// Tooltip for MeshEmitter
+function EditorTree::GetTooltipMeshEmitter( %this, %obj )
+{
+   %text = "Datablock: " @ %obj.dataBlock;
+   return %text;
+}
+
 // Tooltip for InteriorInstance
 function EditorTree::GetTooltipInteriorInstance( %this, %obj )
 {

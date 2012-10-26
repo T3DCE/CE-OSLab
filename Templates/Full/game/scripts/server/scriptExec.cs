@@ -32,6 +32,8 @@ exec("./projectile.cs");
 exec("./radiusDamage.cs");
 exec("./teleporter.cs");
 
+exec("./particles.cs"); 
+
 // Load our supporting weapon script, it contains methods used by all weapons.
 exec("./weapon.cs");
 
@@ -59,3 +61,4 @@ exec("./turret.cs");
 // Load our gametypes
 exec("./gameCore.cs"); // This is the 'core' of the gametype functionality.
 exec("./gameDM.cs"); // Overrides GameCore with DeathMatch functionality.
+

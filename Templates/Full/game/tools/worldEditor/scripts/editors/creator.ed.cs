@@ -45,7 +45,6 @@ function EWCreatorWindow::init( %this )
       %this.registerMissionObject( "WaterBlock",          "Water Block" );
       %this.registerMissionObject( "SFXEmitter",          "Sound Emitter" );
       %this.registerMissionObject( "Precipitation" );
-      %this.registerMissionObject( "ParticleEmitterNode", "Particle Emitter" );
       
       // Legacy features. Users should use Ground Cover and the Forest Editor.   
       //%this.registerMissionObject( "fxShapeReplicator",   "Shape Replicator" );
@@ -66,6 +65,14 @@ function EWCreatorWindow::init( %this )
       
    %this.endGroup();
 
+   %this.beginGroup( "ParticleSystem" );
+      
+      %this.registerMissionObject( "ParticleEmitterNode", "Particle Emitter" );
+      %this.registerMissionObject( "GraphEmitterNode", "Graph Emitter" );
+      %this.registerMissionObject( "MeshEmitter", "Mesh Emitter" );
+   
+   %this.endGroup();
+   
    %this.beginGroup( "Level" );
    
       %this.registerMissionObject( "MissionArea",  "Mission Area" );

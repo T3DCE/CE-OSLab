@@ -47,6 +47,10 @@ class ParticleData : public SimDataBlock
       PDC_NUM_KEYS = 4,
    };
 
+#ifdef RES_IMPROVED_PARTICLE
+   Point3F relPos;
+#endif
+
    F32   dragCoefficient;
    F32   windCoefficient;
    F32   gravityCoefficient;
@@ -122,6 +126,10 @@ struct Particle
 
    F32              spinSpeed;
    Particle *       next;
+
+#ifdef RES_IMPROVED_PARTICLE
+   Point3F relPos;
+#endif
 };
 
 

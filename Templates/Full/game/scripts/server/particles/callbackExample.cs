@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2012 GarageGames, LLC
+// Copyright (c) 2012 Lukas Joergensen, FuzzyVoid Studio
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to
@@ -20,18 +20,38 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// Load up all datablocks.  This function is called when
-// a server is constructed.
+datablock GraphEmitterNodeData(g_downSpiralNode : g_DefaultNode)
+{
+   xFunc = "cos(t/50)*t*0.02";
+   yFunc = "sin(t/50)*t*0.02";
+   zFunc = "t/20";
+   Reverse = true;
+   Loop = false;
+};
 
-// Set up the Camera's
-exec("./camera.cs");
+function g_downSpiralNode::onBoundaryLimit(%this, %node, %Max)
+{
+   if(%Max)
+      %node.Reverse = true;
+   else
+      %node.Reverse = false;
+}
 
-// Common Marker's
-exec("./markers.cs");
+datablock GraphEmitterNodeData(flameSpiralSpellNode : g_downSpiralNode){ timeScale = 2;};
+datablock GraphEmitterNodeData(spellWave : g_wavesNode){ Loop = false; };
 
-exec("./defaultparticle.cs");
-exec("./graphExampleTemplates.cs");
-exec("./meshExampleTemplates.cs");
+function flameSpiralSpellNode::onBoundaryLimit(%this, %node, %Max)
+{
+   if(!%Max)
+   {
+      %node.setDatablock(spellWave);
+   }
+}
 
-// LightFlareData and LightAnimData(s)
-exec("./lights.cs");
+function spellWave::onBoundaryLimit(%this, %node, %Max)
+{
+   if(%Max)
+   {
+      %node.delete();
+   }
+}

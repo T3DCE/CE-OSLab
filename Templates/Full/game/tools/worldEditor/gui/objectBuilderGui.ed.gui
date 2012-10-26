@@ -863,6 +863,21 @@ function ObjectBuilderGui::buildParticleEmitterNode(%this)
    %this.process();
 }
 
+function ObjectBuilderGui::buildGraphEmitterNode(%this)
+{
+   %this.objectClassName = "GraphEmitterNode";
+   %this.addField("dataBlock", "TypeDataBlock", "datablock", "GraphEmitterNodeData");
+   %this.addField("emitter",   "TypeDataBlock", "Particle data", "GraphEmitterData");
+   %this.process();
+}
+
+function ObjectBuilderGui::buildMeshEmitter(%this)
+{
+   %this.objectClassName = "MeshEmitter";
+   %this.addField("dataBlock", "TypeDataBlock", "datablock", "MeshEmitterData");
+   %this.process();
+}
+
 function ObjectBuilderGui::buildParticleSimulation(%this)
 {
    %this.objectClassName = "ParticleSimulation";

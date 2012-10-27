@@ -20,27 +20,6 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-datablock MeshEmitterData(m_DefaultEmitter)
-{
-   ejectionPeriodMS = "1";
-   periodVarianceMS = "0";
-   ejectionVelocity = "0";
-   velocityVariance = "0";
-   ejectionOffset = "1";
-   thetaMax = "0";
-   thetaMin = "0";
-   phiReferenceVel = "0";
-   phiVariance = "0";
-   particles = "DefaultParticle";
-   blendStyle = "ADDITIVE";
-   softnessDistance = "0.01";
-};
-
-datablock MeshEmitterData(m_burningmesh : m_DefaultEmitter)
-{
-   particles = "m_burningParticle";
-};
-
 datablock ParticleData(m_burningParticle)
 {
    textureName          = "art/shapes/particles/fire.png";
@@ -69,4 +48,25 @@ datablock ParticleData(m_burningParticle)
    animTexName = "art/shapes/particles/fire.png";
    sizes[3] = "12.5";
    spinSpeed = "2";
+};
+
+datablock MeshEmitterData(m_DefaultEmitter)
+{
+   ejectionPeriodMS = "1";
+   periodVarianceMS = "0";
+   ejectionVelocity = "0";
+   velocityVariance = "0";
+   ejectionOffset = "1";
+   thetaMax = "0";
+   thetaMin = "0";
+   phiReferenceVel = "0";
+   phiVariance = "0";
+   particles = "DefaultParticle";
+   blendStyle = "ADDITIVE";
+   softnessDistance = "0.01";
+};
+
+datablock MeshEmitterData(m_burningmesh : m_DefaultEmitter)
+{
+   particles = "m_burningParticle";
 };

@@ -32,7 +32,7 @@ singleton TSShapeConstructor(WheelDae)
 
 function WheelDae::onLoad(%this)
 {
-   %this.removeNode("EnvironmentAmbientLight");
+   //%this.removeNode("EnvironmentAmbientLight");
    %this.removeNode("Tread_LOD100");
    %this.removeNode("Tread_LOD2");
    %this.removeNode("Tread_LOD300");

@@ -83,7 +83,9 @@ function onStart()
    exec("./scripts/gui/guiTreeViewCtrl.cs");
    exec("./scripts/gui/messageBoxes/messageBox.ed.cs");
    
-   exec("./art/gui/customProfiles.cs");
+   // Do we need this here?  It already gets exec'd from
+   // client/init.cs - this is also an incorrect filepath.
+   //exec("./art/gui/customProfiles.cs");
    
    // Level Chooser GUI
    exec("./art/gui/chooseLevelDlg.gui");

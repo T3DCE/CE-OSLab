@@ -228,6 +228,16 @@ function Armor::damage(%this, %obj, %sourceObject, %position, %damage, %damageTy
 
    if (isObject(%client))
    {
+      // Testing the blowUp() feature
+      if(%damageType $= "Suicide")
+      {
+         // This guy went to pieces!
+         %obj.blowUp();
+         
+         // Hide the player object.  onDisabled() will do further cleanup
+         %obj.startFade(50, 0, true);
+      }
+      
       // Determine damage direction
       if (%damageType !$= "Suicide")
          %obj.setDamageDirection(%sourceObject, %position);

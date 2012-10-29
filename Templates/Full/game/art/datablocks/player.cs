@@ -455,8 +455,8 @@ datablock DebrisData( PlayerDebris )
    elasticity = 0.15;
    friction = 0.5;
 
-   lifetime = 4.0;
-   lifetimeVariance = 0.0;
+   lifetime = 8.0;
+   lifetimeVariance = 2.0;
 
    minSpinSpeed = 40;
    maxSpinSpeed = 600;
@@ -470,8 +470,8 @@ datablock DebrisData( PlayerDebris )
    useRadiusMass = true;
    baseRadius = 1;
 
-   velocity = 20.0;
-   velocityVariance = 12.0;
+   velocity = 12.0;
+   velocityVariance = 4.0;
 };
 
 // ----------------------------------------------------------------------------

@@ -4597,6 +4597,13 @@ DefineEngineMethod( ShapeBase, applyDamage, void, ( F32 amount ),,
    object->applyDamage( amount );
 }
 
+DefineEngineMethod(ShapeBase, blowUp, void, (),, 
+   "@brief Explodes an object into pieces.")  
+{  
+    object->blowUp();  
+}  
+
+
 DefineEngineMethod( ShapeBase, applyRepair, void, ( F32 amount ),,
    "@brief Repair damage by the specified amount.\n\n"
 

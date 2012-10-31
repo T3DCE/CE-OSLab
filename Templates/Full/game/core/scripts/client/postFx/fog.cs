@@ -51,7 +51,7 @@ singleton PostEffect( FogPostFx )
 {   
    // We forward render the reflection pass
    // so it does its own fogging.
-   allowReflectPass = false;
+   allowReflectPass = true;
       
    renderTime = "PFXBeforeBin";
    renderBin = "ObjTranslucentBin";   

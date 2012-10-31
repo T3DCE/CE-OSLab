@@ -337,3 +337,18 @@ void LevelInfo::_onLMActivate(const char *lm, bool enable)
    }
 #endif
 }
+
+// ----------------------------------------------------------------------------
+
+void LevelInfo::SetFog(F32 fDensity, F32 fOffset)  
+{  
+	mFogData.density = fDensity;  
+	mFogData.densityOffset = fOffset;  
+
+	inspectPostApply();  
+}  
+
+DefineEngineMethod(LevelInfo, SetFog, void, (F32 fDensity, F32 fOffset), , "SetFog(Density,Offset)")  
+{  
+	object->SetFog(fDensity,fOffset);  
+}

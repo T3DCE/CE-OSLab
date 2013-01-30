@@ -300,18 +300,9 @@ void TSShapeInstance::updateTransitionNodeTransforms(TSIntegerSet& transitionNod
    {
       if (smNodeLocalTransformDirty.test(i))
       {
-         if (scaleCurrentlyAnimated())
-         {
-            // @todo:No support for scale yet => need to do proper affine decomposition here
-            smNodeCurrentTranslations[i] = smNodeLocalTransforms[i].getPosition();
-            smNodeCurrentRotations[i].set(smNodeLocalTransforms[i]);
-         }
-         else
-         {
-            // Scale is identity => can do a cheap decomposition
-            smNodeCurrentTranslations[i] = smNodeLocalTransforms[i].getPosition();
-            smNodeCurrentRotations[i].set(smNodeLocalTransforms[i]);
-         }
+        // Scale is identity => can do a cheap decomposition
+        smNodeCurrentTranslations[i] = smNodeLocalTransforms[i].getPosition();
+        smNodeCurrentRotations[i].set(smNodeLocalTransforms[i]);
       }
    }
 }

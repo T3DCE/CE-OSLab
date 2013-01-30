@@ -747,7 +747,7 @@ void NetConnection::objectLocalClearAlways(NetObject *obj)
 
 bool NetConnection::validateGhostArray()
 {
-   AssertFatal(mGhostZeroUpdateIndex >= 0 && mGhostZeroUpdateIndex <= mGhostFreeIndex, "Invalid update index range.");
+   AssertFatal(mGhostZeroUpdateIndex > 0 && mGhostZeroUpdateIndex <= mGhostFreeIndex, "Invalid update index range.");
    AssertFatal(mGhostFreeIndex <= MaxGhostCount, "Invalid free index range.");
    U32 i;
    for(i = 0; i < mGhostZeroUpdateIndex; i ++)

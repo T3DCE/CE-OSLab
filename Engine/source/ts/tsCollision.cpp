@@ -1538,7 +1538,7 @@ bool TSMesh::castRayOpcode( const Point3F &s, const Point3F &e, RayInfo *info, T
       Opcode::VertexPointers vp;
       mOptTree->GetMeshInterface()->GetTriangle( vp, face.mFaceID );
 
-      if ( materials && vp.MatIdx >= 0 && vp.MatIdx < materials->size() )
+      if ( materials && vp.MatIdx < materials->size() )
          info->material = materials->getMaterialInst( vp.MatIdx );
 
       // Get the two edges.

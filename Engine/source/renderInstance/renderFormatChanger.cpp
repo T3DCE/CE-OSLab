@@ -134,12 +134,14 @@ void RenderFormatToken::process(SceneRenderState *state, RenderPassStateBin *cal
          // Set active z target on render pass
          if(mTargetDepthStencilTexture[mTargetChainIdx].isValid())
          {
-            if(callingBin->getRenderPass()->getDepthTargetTexture() != GFXTextureTarget::sDefaultDepthStencil)
-               mStoredPassZTarget = callingBin->getRenderPass()->getDepthTargetTexture();
+            RenderPassManager *mRenderPass = callingBin->getRenderPass();
+            GFXTextureObject *mDepthTargetTexture = mRenderPass->getDepthTargetTexture();
+            if(mDepthTargetTexture != GFXTextureTarget::sDefaultDepthStencil)
+                mStoredPassZTarget = mDepthTargetTexture;
             else
-               mStoredPassZTarget = NULL;
+                mStoredPassZTarget = NULL;
 
-            callingBin->getRenderPass()->setDepthTargetTexture(mTargetDepthStencilTexture[mTargetChainIdx]);
+            mRenderPass->setDepthTargetTexture(mTargetDepthStencilTexture[mTargetChainIdx]);
          }
 
          // Run the PostEffect which copies data into the new target.
@@ -172,7 +174,7 @@ void RenderFormatToken::process(SceneRenderState *state, RenderPassStateBin *cal
          // Run the PostEffect which copies data to the backbuffer
          if(mResolvePostEffect.isValid())
          {
-		      // Need to create a texhandle here, since inOutTex gets assigned during process()
+              // Need to create a texhandle here, since inOutTex gets assigned during process()
             GFXTexHandle inOutTex = mTargetColorTexture[mTargetChainIdx];
             mResolvePostEffect->process( state, inOutTex, &mTarget.getViewport() );
          }

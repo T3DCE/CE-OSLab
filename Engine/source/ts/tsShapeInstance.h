@@ -659,7 +659,7 @@ protected:
 
    TSShapeInstance( const Resource<TSShape> & shape, bool loadMaterials = true);
    TSShapeInstance( TSShape * pShape, bool loadMaterials = true);
-   ~TSShapeInstance();
+   virtual ~TSShapeInstance();
 
    void buildInstanceData(TSShape *, bool loadMaterials);
    void initNodeTransforms();

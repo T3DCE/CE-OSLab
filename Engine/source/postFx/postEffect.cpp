@@ -790,7 +790,7 @@ void PostEffect::_setupConstants( const SceneRenderState *state )
    }   
 
    EffectConstTable::Iterator iter = mEffectConsts.begin();
-   for ( ; iter != mEffectConsts.end(); iter++ )
+   for ( ; iter != mEffectConsts.end(); ++iter )
       iter->value->setToBuffer( mShaderConsts );
 }
 

@@ -368,7 +368,7 @@ void ProcessedShaderMaterial::_determineFeatures(  U32 stageNum,
    {
       fd.features.addFeature( MFT_DiffuseMapAtlas );
 
-      if ( mMaterial->mNormalMapAtlas )
+      if ( mMaterial->mNormalMapAtlas[stageNum] )
          fd.features.addFeature( MFT_NormalMapAtlas );
    }
 

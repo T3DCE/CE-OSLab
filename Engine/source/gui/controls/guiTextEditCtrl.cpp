@@ -192,7 +192,7 @@ bool GuiTextEditCtrl::onAdd()
       }
    }
 
-   if( mText && mText[0] )
+   if( mText[0] )
    {
       setText(mText);
    }

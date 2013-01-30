@@ -963,7 +963,7 @@ class SimObjectPtr : public WeakRefPtr< T >
 
       ~SimObjectPtr() { set((WeakRefBase::WeakReference*)NULL); }
 
-      SimObjectPtr<T>& operator=(const SimObjectPtr ref)
+      SimObjectPtr<T>& operator=(const SimObjectPtr &ref)
       {
          set(ref.mReference);
          return *this;

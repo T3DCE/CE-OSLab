@@ -77,14 +77,14 @@ GFXFormatInfo::Data GFXFormatInfo::smFormatInfos[ GFXFormat_COUNT ] =
 //-----------------------------------------------------------------------------
 
 void GFXCopyPixels(  GFXFormat fromFormat, U32 fromWidth, U32 fromHeight, U8* fromData,
-                     GFXFormat toFormat, U32 toWidth, U32 toHeight, U8* toData )
+					 GFXFormat toFormat, U32 toWidth, U32 toHeight, U8* toData )
 {
    if( fromFormat == toFormat
-       && fromWidth == toWidth
-       && fromHeight == fromHeight )
-      dMemcpy( toData, fromData, fromWidth * fromHeight * GFXFormatInfo( fromFormat ).getBytesPerPixel() );
+		&& fromWidth == toWidth
+		&& fromHeight == toHeight )
+	  dMemcpy( toData, fromData, fromWidth * fromHeight * GFXFormatInfo( fromFormat ).getBytesPerPixel() );
    else
    {
-      AssertFatal( false, "Not implemented" );
+	  AssertFatal( false, "Not implemented" );
    }
 }

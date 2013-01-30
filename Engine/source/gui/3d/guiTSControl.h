@@ -141,7 +141,7 @@ public:
    /// intended for debug rendering, editor rendering, or infrequent rendering.
    ///
    void drawLine( Point3F p0, Point3F p1, const ColorI &color, F32 width );
-   void drawLineList( const Vector<Point3F> &points, const ColorI color, F32 width );
+   void drawLineList( const Vector<Point3F> &points, const ColorI &color, F32 width );
 
    static const U32& getFrameCount() { return smFrameCount; }
 

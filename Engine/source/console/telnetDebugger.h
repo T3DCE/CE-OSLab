@@ -70,7 +70,7 @@ class TelnetDebugger
    bool mWaitForClient;
 
    TelnetDebugger();
-   ~TelnetDebugger();
+   virtual ~TelnetDebugger();
 
    struct Breakpoint
    {

@@ -802,16 +802,17 @@ static void m_matF_x_box3F_C(const F32 *m, F32* min, F32* max)
    const F32 * row = &m[0];
    for (U32 i = 0; i < 3; i++)
    {
-      #define  Do_One_Row(j)   {                         \
-         F32    a = (row[j] * originalMin[j]);           \
-         F32    b = (row[j] * originalMax[j]);           \
-         if (a < b) { *min += a;  *max += b; }           \
-         else       { *min += b;  *max += a; }     }
+      for (int j = 0; j < 3; j++)
+      {
+            F32    a = (row[j] * originalMin[j]);
+            F32    b = (row[j] * originalMax[j]);
+            if (a < b) { 
+                  *min += a;  *max += b; 
+            } else {
+                  *min += b;  *max += a;
+            }
+      }
 
-      // Simpler addressing (avoiding things like [ecx+edi*4]) might be worthwhile (LH):
-      Do_One_Row(0);
-      Do_One_Row(1);
-      Do_One_Row(2);
       row += 4;
       min++;
       max++;

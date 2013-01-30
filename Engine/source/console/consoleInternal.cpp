@@ -760,12 +760,14 @@ DefineEngineFunction(backtrace, void, ( ),,
 
    for(U32 i = 0; i < gEvalState.getStackDepth(); i++)
    {
-      if(gEvalState.stack[i]->scopeNamespace && gEvalState.stack[i]->scopeNamespace->mEntryList->mPackage)  
-         totalSize += dStrlen(gEvalState.stack[i]->scopeNamespace->mEntryList->mPackage) + 2;  
-      if(gEvalState.stack[i]->scopeName)  
-      totalSize += dStrlen(gEvalState.stack[i]->scopeName) + 3;
-      if(gEvalState.stack[i]->scopeNamespace && gEvalState.stack[i]->scopeNamespace->mName)
-         totalSize += dStrlen(gEvalState.stack[i]->scopeNamespace->mName) + 2;
+      Dictionary* mStack = gEvalState.stack[i];
+      Namespace* mNamespace = mStack->scopeNamespace;
+      if(mNamespace && mNamespace->mEntryList->mPackage)  
+         totalSize += dStrlen(mNamespace->mEntryList->mPackage) + 2;  
+      if(mStack->scopeName)  
+         totalSize += dStrlen(mStack->scopeName) + 3;
+      if(mNamespace && mNamespace->mName)
+         totalSize += dStrlen(mNamespace->mName) + 2;
    }
 
    char *buf = Con::getReturnBuffer(totalSize);

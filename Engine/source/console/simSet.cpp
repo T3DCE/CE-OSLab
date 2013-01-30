@@ -1035,7 +1035,7 @@ DefineEngineMethod( SimSet, getObject, SimObject*, ( U32 index ),,
    "@param index The object index.\n"
    "@return The object at the given index or -1 if index is out of range." )
 {
-   if( index < 0 || index >= object->size() )
+   if( index >= object->size() )
    {
       Con::errorf( "Set::getObject - index out of range." );
       return NULL;

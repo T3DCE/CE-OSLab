@@ -737,7 +737,7 @@ ConsoleFunction( setServerInfo, bool, 2, 2, "setServerInfo(index);" )
 {
    TORQUE_UNUSED(argc);
    U32 index = dAtoi(argv[1]);
-   if (index >= 0 && index < gServerList.size()) {
+   if (index < gServerList.size()) {
       ServerInfo& info = gServerList[index];
 
       char addrString[256];

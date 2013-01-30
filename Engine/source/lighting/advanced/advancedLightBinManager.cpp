@@ -437,7 +437,7 @@ AdvancedLightBinManager::LightMaterialInfo* AdvancedLightBinManager::_getLightMa
 void AdvancedLightBinManager::_deleteLightMaterials()
 {
    LightMatTable::Iterator iter = mLightMaterials.begin();
-   for ( ; iter != mLightMaterials.end(); iter++ )
+   for ( ; iter != mLightMaterials.end(); ++iter )
       delete iter->value;
       
    mLightMaterials.clear();

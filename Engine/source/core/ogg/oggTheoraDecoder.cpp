@@ -375,12 +375,12 @@ void OggTheoraDecoder::_transcode( th_ycbcr_buffer ycbcr, U8* buffer, const U32 
          {
             ++ pU0;
             ++ pV0;
-         }
+
          
          // Pixel 0x1.
          
-         if( numChromaSamples == 4 )
             G = sampleG( pU0, pV0 );
+         }
             
          ycbcrToRGB( dst0, pY0, pU0, pV0, G );
          

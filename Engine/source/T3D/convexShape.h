@@ -112,7 +112,7 @@ public:
 
       U32 operator []( U32 index ) const
       {
-         AssertFatal( index >= 0 && index <= 2, "index out of range" );
+         AssertFatal( index <= 2, "index out of range" );
          return *( (&p0) + index );
       }
    };

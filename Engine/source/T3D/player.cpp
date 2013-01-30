@@ -3353,7 +3353,7 @@ void Player::updateLookAnimation(F32 dT)
 
 bool Player::inDeathAnim()
 {
-   if (mActionAnimation.thread && mActionAnimation.action >= 0)
+   if (mActionAnimation.thread)
       if (mActionAnimation.action < mDataBlock->actionCount)
          return mDataBlock->actionList[mActionAnimation.action].death;
 

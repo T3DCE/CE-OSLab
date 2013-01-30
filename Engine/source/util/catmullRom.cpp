@@ -162,13 +162,13 @@ U32 CatmullRomBase::getPrevNode( F32 t )
          break;
    }
 
-   AssertFatal( i >= 0 && i < mCount, "CatmullRomBase::getPrevNode - Got bad output index!" );
+   AssertFatal( i < mCount, "CatmullRomBase::getPrevNode - Got bad output index!" );
 
    return i;   
 }
 
 F32 CatmullRomBase::getTime( U32 idx )
 {
-   AssertFatal( idx >= 0 && idx < mCount, "CatmullRomBase::getTime - Got bad index!" );
+   AssertFatal( idx < mCount, "CatmullRomBase::getTime - Got bad index!" );
    return mTimes[idx];
 }

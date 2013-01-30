@@ -312,14 +312,14 @@ inline TYPE CatmullRom<TYPE>::acceleration( F32 t )
 template<typename TYPE>
 inline TYPE CatmullRom<TYPE>::getPosition( U32 idx )
 {
-   AssertFatal( idx >= 0 && idx < mCount-1, "CatmullRom<>::getPosition - Got bad index!" );
+   AssertFatal( idx < mCount-1, "CatmullRom<>::getPosition - Got bad index!" );
    return mPositions[idx];
 }
 
 template<typename TYPE>
 inline F32 CatmullRom<TYPE>::segmentArcLength( U32 i, F32 u1, F32 u2 )
 {
-   AssertFatal( i >= 0 && i < mCount-1, "CatmullRom<>::getPosition - Got bad index!" );
+   AssertFatal( i < mCount-1, "CatmullRom<>::segmentArcLength - Got bad index!" );
 
    if ( u2 <= u1 )
       return 0.0f;

@@ -181,25 +181,22 @@ void DepthSortList::set(const MatrixF & mat, Point3F & extents)
    mPlaneList.clear();
 
    mPlaneList.increment();
-   mPlaneList.last().set(-1.0f, 0.0f, 0.0f);
-   mPlaneList.last().d = -mExtent.x;
-   mPlaneList.increment();
-   mPlaneList.last().set( 1.0f, 0.0f, 0.0f);
-   mPlaneList.last().d = -mExtent.x;
+   mPlaneList.last().set(-1.0f, 0.0f, 0.0f, -mExtent.x);
 
    mPlaneList.increment();
-   mPlaneList.last().set( 0.0f,-1.0f, 0.0f);
-   mPlaneList.last().d = 0;
-   mPlaneList.increment();
-   mPlaneList.last().set( 0.0f, 1.0f, 0.0f);
-   mPlaneList.last().d = -2.0f * mExtent.y;
+   mPlaneList.last().set( 1.0f, 0.0f, 0.0f, -mExtent.x);
 
    mPlaneList.increment();
-   mPlaneList.last().set( 0.0f, 0.0f,-1.0f);
-   mPlaneList.last().d = -mExtent.z;
+   mPlaneList.last().set( 0.0f,-1.0f, 0.0f, 0);
+
    mPlaneList.increment();
-   mPlaneList.last().set( 0.0f, 0.0f, 1.0f);
-   mPlaneList.last().d = -mExtent.z;
+   mPlaneList.last().set( 0.0f, 1.0f, 0.0f, -2.0f * mExtent.y);
+
+   mPlaneList.increment();
+   mPlaneList.last().set( 0.0f, 0.0f,-1.0f, -mExtent.z);
+
+   mPlaneList.increment();
+   mPlaneList.last().set( 0.0f, 0.0f, 1.0f, -mExtent.z);
 }
 
 //----------------------------------------------------------------------------
@@ -530,8 +527,8 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
 
    S32 startSize = mVertexList.size();
 
-	// Assume back and front are degenerate polygons until proven otherwise.
-	bool backDegen = true, frontDegen = true;
+   // Assume back and front are degenerate polygons until proven otherwise.
+   bool backDegen = true, frontDegen = true;
 
    U32 bIdx;
    Point3F * a, * b;
@@ -551,8 +548,8 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
       signB = 0;
 
    S32 i;
-	for (i = 0; i<src.vertexCount; i++)
-	{
+   for (i = 0; i<src.vertexCount; i++)
+   {
       a = b;
       bIdx = mIndexList[src.vertexStart+i];
       b = &mVertexList[bIdx].point;
@@ -566,25 +563,25 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
 
       switch(signA*3 + signB + 4) // +4 is to make values go from 0 up...hopefully enticing compiler to make a jump-table
       {
-			case 0:		// A-, B-
-			case 3:		// A., B-
+         case 0:		// A-, B-
+         case 3:		// A., B-
             backVerts.push_back(bIdx);
-				backDegen = false;
-				break;
-			case 8:		// A+, B+
-			case 5:		// A., B+
+            backDegen = false;
+            break;
+         case 8:		// A+, B+
+         case 5:		// A., B+
             frontVerts.push_back(bIdx);
             frontDegen = false;
-				break;
+            break;
 
-			case 1:		// A-, B.
-			case 4:		// A., B.
-			case 7:		// A+, B.
+         case 1:		// A-, B.
+         case 4:		// A., B.
+         case 7:		// A+, B.
             backVerts.push_back(bIdx);
             frontVerts.push_back(bIdx);
-				break;
+            break;
 
-			case 2:		// A-, B+
+         case 2:		// A-, B+
          {
             // intersect line A-B with plane
             F32 dotA = mDot(*a,normal);
@@ -600,9 +597,9 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
             mVertexList.push_back(v);
             b = &mVertexList[bIdx].point; // better get this pointer again since we just incremented vector
             frontDegen = false;
-				break;
+            break;
          }
-			case 6:		// A+, B-
+         case 6:		// A+, B-
          {
             // intersect line A-B with plane
             F32 dotA = mDot(*a,normal);
@@ -618,12 +615,12 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
             mVertexList.push_back(v);
             b = &mVertexList[bIdx].point; // better get this pointer again since we just incremented vector
             backDegen = false;
-				break;
+            break;
          }
       }
    }
 
-	// Check for degeneracy.
+   // Check for degeneracy.
 
    if (!ALWAYS_RETURN_FRONT_AND_BACK)
    {
@@ -666,15 +663,15 @@ bool DepthSortList::splitPoly(const Poly & src, Point3F & normal, F32 k, Poly & 
    mIndexList.setSize(backPoly.vertexStart+backPoly.vertexCount);
 
    if( frontPoly.vertexCount ) {
-	   dMemcpy(&mIndexList[frontPoly.vertexStart],
-		   frontVerts.address(),
-		   sizeof(U32)*frontPoly.vertexCount);
+      dMemcpy(&mIndexList[frontPoly.vertexStart],
+         frontVerts.address(),
+         sizeof(U32)*frontPoly.vertexCount);
    }
 
    if( backPoly.vertexCount ) {
-	   dMemcpy(&mIndexList[backPoly.vertexStart],
-		   backVerts.address(),
-		   sizeof(U32)*backPoly.vertexCount);
+      dMemcpy(&mIndexList[backPoly.vertexStart],
+         backVerts.address(),
+         sizeof(U32)*backPoly.vertexCount);
    }
 
    return true;
@@ -756,17 +753,17 @@ void DepthSortList::depthPartition(const Point3F * sourceVerts, U32 numVerts, Ve
       Poly & cutter = mPolyList[mPolyIndexList[i]];
       S32 startVert = partitionVerts.size();
 
-	  bool allowclipping = cutter.polyFlags & CLIPPEDPOLYLIST_FLAG_ALLOWCLIPPING;
+     bool allowclipping = cutter.polyFlags & CLIPPEDPOLYLIST_FLAG_ALLOWCLIPPING;
 
       S32 j;
       for (j=0; j<sourceList->size(); j++)
       {
          Poly toCut = (*sourceList)[j];
 
-		 if(allowclipping)
+       if(allowclipping)
             cookieCutter(cutter,toCut,*scraps,partition,partitionVerts);
-		 else
-		    cookieCutter(cutter,toCut,gWorkListJunkBin,partition,partitionVerts);
+       else
+          cookieCutter(cutter,toCut,gWorkListJunkBin,partition,partitionVerts);
       }
 
       // project all the new verts onto the cutter's plane
@@ -775,14 +772,14 @@ void DepthSortList::depthPartition(const Point3F * sourceVerts, U32 numVerts, Ve
       for (j=startVert; j<partitionVerts.size(); j++)
          partitionVerts[j].y = invY * (cutter.plane.d + cutter.plane.x * partitionVerts[j].x + cutter.plane.z * partitionVerts[j].z);
 
-	  if(allowclipping)
-	  {
+     if(allowclipping)
+     {
          sourceList->clear();
          // swap work lists -- scraps become source for next closest poly
          Vector<Poly> * tmpListPtr = sourceList;
          sourceList = scraps;
          scraps = tmpListPtr;
-	  }
+     }
       i++;
    }
 }

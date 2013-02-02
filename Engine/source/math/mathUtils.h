@@ -163,14 +163,14 @@ namespace MathUtils
    
    /// Return capsule-sphere overlap.  Returns time of first overlap, where time
    /// is viewed as a sphere of radius radA moving from point A0 to A1.
-   bool capsuleSphereNearestOverlap(const Point3F & A0, const Point3F A1, F32 radA, const Point3F & B, F32 radB, F32 & t);
+   bool capsuleSphereNearestOverlap(const Point3F & A0, const Point3F & A1, F32 radA, const Point3F & B, F32 radB, F32 & t);
 
    /// Intersect two line segments (p1,q1) and (p2,q2), returning points on lines (c1 & c2) and line parameters (s,t).
    /// Based on routine from "Real Time Collision Detection" by Christer Ericson pp 149.
    F32 segmentSegmentNearest(const Point3F & p1, const Point3F & q1, const Point3F & p2, const Point3F & q2, F32 & s, F32 & t, Point3F & c1, Point3F & c2);
 
    /// Transform bounding box making sure to keep original box entirely contained.
-   void transformBoundingBox(const Box3F &sbox, const MatrixF &mat, const Point3F scale, Box3F &dbox);
+   void transformBoundingBox(const Box3F &sbox, const MatrixF &mat, const Point3F &scale, Box3F &dbox);
 
    bool mProjectWorldToScreen(   const Point3F &in, 
                                  Point3F *out,
@@ -283,16 +283,16 @@ namespace MathUtils
                                     const Point3F &b, 
                                     const Point3F &p );
   
-	/// Sort the passed verts ( Point3F ) in a clockwise or counter-clockwise winding order.
-	/// Verts must be co-planar and non-collinear.
-	///
-	/// @param quadMat	Transform matrix from vert space to quad space.
-	/// @param clockwise	Sort clockwise or counter-clockwise
-	/// @param verts		Array of Point3F verts.
-	/// @param vertMap	Output - Array of vert element ids sorted by winding order.
-	/// @param count		Element count of the verts and vertMap arrays which must be allocated prior to this call.				
-	///
-	void sortQuadWindingOrder( const MatrixF &quadMat, bool clockwise, const Point3F *verts, U32 *vertMap, U32 count );
+   /// Sort the passed verts ( Point3F ) in a clockwise or counter-clockwise winding order.
+   /// Verts must be co-planar and non-collinear.
+   ///
+   /// @param quadMat	Transform matrix from vert space to quad space.
+   /// @param clockwise	Sort clockwise or counter-clockwise
+   /// @param verts		Array of Point3F verts.
+   /// @param vertMap	Output - Array of vert element ids sorted by winding order.
+   /// @param count		Element count of the verts and vertMap arrays which must be allocated prior to this call.				
+   ///
+   void sortQuadWindingOrder( const MatrixF &quadMat, bool clockwise, const Point3F *verts, U32 *vertMap, U32 count );
 
    /// Same as above except we assume that the passed verts ( Point3F ) are already
    /// transformed into 'quad space'. If this was done correctly and the points

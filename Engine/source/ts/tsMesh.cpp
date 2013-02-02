@@ -683,8 +683,8 @@ bool TSMesh::castRay( S32 frame, const Point3F & start, const Point3F & end, Ray
          pfound = (bool*) ((dsize_t)pfound ^ (dsize_t)&tmpFound ^ (dsize_t)&found);
       }
 
-      bool noCollision = num * endDen * sgn < endNum * den * sgn && num * startDen * sgn < startNum * den * sgn;
-      if (num * *pden * sgn < *pnum * den * sgn && !noCollision)
+      bool noCollision = num * endDen  < endNum * den  && num * startDen  < startNum * den;
+      if (num * *pden < *pnum * den && !noCollision)
       {
          *pnum = num;
          *pden = den;
@@ -763,11 +763,11 @@ bool TSMesh::castRayRendered( S32 frame, const Point3F & start, const Point3F & 
 
    S32 firstVert  = vertsPerFrame * frame;
 
-	bool found = false;
-	F32 best_t = F32_MAX;
+   bool found = false;
+   F32 best_t = F32_MAX;
    U32 bestIdx0 = 0, bestIdx1 = 0, bestIdx2 = 0;
    BaseMatInstance* bestMaterial = NULL;
-	Point3F dir = end - start;
+   Point3F dir = end - start;
 
    for ( S32 i = 0; i < primitives.size(); i++ )
    {
@@ -790,22 +790,22 @@ bool TSMesh::castRayRendered( S32 frame, const Point3F & start, const Point3F & 
             idx1 = indices[drawStart + j + 1];
             idx2 = indices[drawStart + j + 2];
 
-			   F32 cur_t = 0;
-			   Point2F b;
+            F32 cur_t = 0;
+            Point2F b;
 
-			   if(castRayTriangle(start, dir, mVertexData[firstVert + idx0].vert(),
+            if(castRayTriangle(start, dir, mVertexData[firstVert + idx0].vert(),
                mVertexData[firstVert + idx1].vert(), mVertexData[firstVert + idx2].vert(), cur_t, b))
-			   {
-				   if(cur_t < best_t)
-				   {
-					   best_t = cur_t;
+            {
+               if(cur_t < best_t)
+               {
+                  best_t = cur_t;
                   bestIdx0 = idx0;
                   bestIdx1 = idx1;
                   bestIdx2 = idx2;
                   bestMaterial = material;
-					   found = true;
-				   }
-			   }
+                  found = true;
+               }
+            }
          }
       }
       else
@@ -824,22 +824,22 @@ bool TSMesh::castRayRendered( S32 frame, const Point3F & start, const Point3F & 
             if ( idx0 == idx1 || idx0 == idx2 || idx1 == idx2 )
                continue;
 
-			   F32 cur_t = 0;
-			   Point2F b;
+            F32 cur_t = 0;
+            Point2F b;
 
-			   if(castRayTriangle(start, dir, mVertexData[firstVert + idx0].vert(), 
+            if(castRayTriangle(start, dir, mVertexData[firstVert + idx0].vert(), 
                mVertexData[firstVert + idx1].vert(), mVertexData[firstVert + idx2].vert(), cur_t, b))
-			   {
-				   if(cur_t < best_t)
-				   {
-					   best_t = cur_t;
+            {
+               if(cur_t < best_t)
+               {
+                  best_t = cur_t;
                   bestIdx0 = firstVert + idx0;
                   bestIdx1 = firstVert + idx1;
                   bestIdx2 = firstVert + idx2;
                   bestMaterial = material;
-					   found = true;
-				   }
-			   }
+                  found = true;
+               }
+            }
          }
       }
    }
@@ -1926,12 +1926,12 @@ TSMesh* TSMesh::assembleMesh( U32 meshType, bool skip )
 }
 
 void TSMesh::convertToTris(	const TSDrawPrimitive *primitivesIn,
-							         const S32 *indicesIn,
-                           	S32 numPrimIn,
-         							S32 &numPrimOut, 
-         							S32 &numIndicesOut,
-                           	TSDrawPrimitive *primitivesOut, 
-							         S32 *indicesOut ) const
+                              const S32 *indicesIn,
+                              S32 numPrimIn,
+                              S32 &numPrimOut, 
+                              S32 &numIndicesOut,
+                              TSDrawPrimitive *primitivesOut, 
+                              S32 *indicesOut ) const
 {
    S32 prevMaterial = -99999;
    TSDrawPrimitive * newDraw = NULL;
@@ -2029,12 +2029,12 @@ void unwindStrip( const S32 * indices, S32 numElements, Vector<S32> &triIndices 
 }
 
 void TSMesh::convertToSingleStrip(	const TSDrawPrimitive *primitivesIn, 
-									         const S32 *indicesIn,
-                                  	S32 numPrimIn, 
-         									S32 &numPrimOut, 
-         									S32 &numIndicesOut,
-         									TSDrawPrimitive *primitivesOut,
-         									S32 *indicesOut ) const
+                                    const S32 *indicesIn,
+                                    S32 numPrimIn, 
+                                    S32 &numPrimOut, 
+                                    S32 &numIndicesOut,
+                                    TSDrawPrimitive *primitivesOut,
+                                    S32 *indicesOut ) const
 {
    S32 prevMaterial = -99999;
    TSDrawPrimitive * newDraw = NULL;
@@ -2176,12 +2176,12 @@ void TSMesh::convertToSingleStrip(	const TSDrawPrimitive *primitivesIn,
 // this method does none of the converting that the above methods do, except that small strips are converted
 // to triangle lists...
 void TSMesh::leaveAsMultipleStrips(	const TSDrawPrimitive *primitivesIn, 
-									         const S32 *indicesIn,
-                                   	S32 numPrimIn, 
-         									S32 &numPrimOut, 
-         									S32 &numIndicesOut,
-                                   	TSDrawPrimitive *primitivesOut, 
-									         S32 *indicesOut ) const
+                                    const S32 *indicesIn,
+                                    S32 numPrimIn, 
+                                    S32 &numPrimOut, 
+                                    S32 &numIndicesOut,
+                                    TSDrawPrimitive *primitivesOut, 
+                                    S32 *indicesOut ) const
 {
    S32 prevMaterial = -99999;
    TSDrawPrimitive * newDraw = NULL;

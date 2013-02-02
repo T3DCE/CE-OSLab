@@ -217,7 +217,7 @@ protected:
 public:
 
    GameBase();
-   ~GameBase();
+   virtual ~GameBase();
 
    enum GameBaseMasks {      
       DataBlockMask     = Parent::NextFreeMask << 0,

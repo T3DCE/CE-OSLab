@@ -286,13 +286,14 @@ void TSThread::activateTriggers(F32 a, F32 b)
    S32 bIndex  = numTriggers+firstTrigger; // initialized to handle case where pos past all triggers
    for (i=firstTrigger; i<numTriggers+firstTrigger; i++)
    {
+      F32 pTrigger = shape->triggers[i].pos;
       // is a between this trigger and previous one...
-      if (a>lastPos && a<=shape->triggers[i].pos)
+      if (a>lastPos && a<=pTrigger)
          aIndex = i;
       // is b between this trigger and previous one...
-      if (b>lastPos && b<=shape->triggers[i].pos)
+      if (b>lastPos && b<=pTrigger)
          bIndex = i;
-      lastPos = shape->triggers[i].pos;
+      lastPos = pTrigger;
    }
 
    // activate triggers between aIndex and bIndex (depends on direction)
@@ -578,16 +579,17 @@ void TSShapeInstance::transitionToSequence(TSThread * thread, S32 seq, F32 pos, 
    setDirty(AllDirtyMask);
    mGroundThread = NULL;
 
-   if (mScaleCurrentlyAnimated && !thread->getSequence()->animatesScale())
+   const TSShape::Sequence* mSequence = thread->getSequence();
+   if (mScaleCurrentlyAnimated && !mSequence->animatesScale())
       checkScaleCurrentlyAnimated();
-   else if (!mScaleCurrentlyAnimated && thread->getSequence()->animatesScale())
+   else if (!mScaleCurrentlyAnimated && mSequence->animatesScale())
       mScaleCurrentlyAnimated=true;
 
    mTransitionRotationNodes.overlap(thread->transitionData.oldRotationNodes);
-   mTransitionRotationNodes.overlap(thread->getSequence()->rotationMatters);
+   mTransitionRotationNodes.overlap(mSequence->rotationMatters);
 
    mTransitionTranslationNodes.overlap(thread->transitionData.oldTranslationNodes);
-   mTransitionTranslationNodes.overlap(thread->getSequence()->translationMatters);
+   mTransitionTranslationNodes.overlap(mSequence->translationMatters);
 
    mTransitionScaleNodes.overlap(thread->transitionData.oldScaleNodes);
    mTransitionScaleNodes.overlap(thread->getSequence()->scaleMatters);
@@ -620,8 +622,8 @@ void TSShapeInstance::clearTransition(TSThread * thread)
    S32 i;
    if (mTransitionThreads.size() != 0) {
       for (i=0; i<mTransitionThreads.size(); i++)
-	 if (mTransitionThreads[i]==thread)
-	    break;
+    if (mTransitionThreads[i]==thread)
+       break;
       AssertFatal(i!=mTransitionThreads.size(),"TSShapeInstance::clearTransition");
       mTransitionThreads.erase(i);
    }

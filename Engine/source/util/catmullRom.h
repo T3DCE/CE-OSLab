@@ -177,7 +177,7 @@ inline TYPE CatmullRom<TYPE>::evaluate( F32 t )
       }
    }
 
-   AssertFatal( i >= 0 && i < mCount, "CatmullRom::evaluate - Got bad index!" );
+   AssertFatal( i < mCount, "CatmullRom::evaluate - Got bad index!" );
 
    F32 t0 = mTimes[i];
    F32 t1 = mTimes[i+1];

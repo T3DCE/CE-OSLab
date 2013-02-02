@@ -79,8 +79,8 @@ public:
    Time operator+(const Time &time) const;
    Time operator-(const Time &time) const;
    S64 operator/(const Time &time) const;
-   const Time& operator+=(const Time time);
-   const Time& operator-=(const Time time);
+   const Time& operator+=(const Time &time);
+   const Time& operator-=(const Time &time);
    
    template<typename T> Time operator*(T scaler) const { return Time(_time * scaler); }
    template<typename T> Time operator/(T scaler) const { return Time(_time / scaler); }
@@ -173,13 +173,13 @@ inline S64 Time::operator/(const Time &time) const
    return S64(_time / time._time);
 }
 
-inline const Time& Time::operator+=(const Time time)
+inline const Time& Time::operator+=(const Time &time)
 {
    _time += time._time;
    return *this;
 }
 
-inline const Time& Time::operator-=(const Time time)
+inline const Time& Time::operator-=(const Time &time)
 {
    _time -= time._time;
    return *this;

@@ -109,7 +109,7 @@ F32 segmentSegmentNearest(const Point3F & p1, const Point3F & q1, const Point3F 
 
 //-----------------------------------------------------------------------------
 
-bool capsuleSphereNearestOverlap(const Point3F & A0, const Point3F A1, F32 radA, const Point3F & B, F32 radB, F32 & t)
+bool capsuleSphereNearestOverlap(const Point3F & A0, const Point3F & A1, F32 radA, const Point3F & B, F32 radB, F32 & t)
 {
    Point3F V = A1-A0;
    Point3F A0B = A0-B;
@@ -362,7 +362,7 @@ void getVectorFromAngles( VectorF &vec, F32 yawAng, F32 pitchAng )
 
 //-----------------------------------------------------------------------------
 
-void transformBoundingBox(const Box3F &sbox, const MatrixF &mat, const Point3F scale, Box3F &dbox)
+void transformBoundingBox(const Box3F &sbox, const MatrixF &mat, const Point3F &scale, Box3F &dbox)
 {
 	Point3F center;
 

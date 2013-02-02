@@ -66,19 +66,6 @@ GFXFence::FenceStatus GFXD3D9QueryFence::getStatus() const
 void GFXD3D9QueryFence::block()
 {
    PROFILE_SCOPE(GFXD3D9QueryFence_block);
-
-   // Calling block() before issue() is valid, catch this case
-   if( mQuery == NULL )
-      return;
-
-   HRESULT hRes;
-   while( ( hRes = mQuery->GetData( NULL, 0, D3DGETDATA_FLUSH ) ) == S_FALSE )
-      ;
-
-   // Check for D3DERR_DEVICELOST, if we lost the device, the fence will get 
-   // re-created next issue()
-   if( hRes == D3DERR_DEVICELOST )
-      SAFE_RELEASE( mQuery );
 }
 
 void GFXD3D9QueryFence::zombify()
